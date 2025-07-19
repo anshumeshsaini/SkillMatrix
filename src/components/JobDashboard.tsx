@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, DollarSign, Users, Building, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,7 +8,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import JobApplicationModal from './JobApplicationModal';
 import JobPostingModal from './JobPostingModal';
-import styled from 'styled-components';
 
 interface Job {
   id: string;
@@ -33,90 +33,6 @@ interface Job {
     is_required: boolean;
   }>;
 }
-
-const StyledButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <StyledWrapper>
-      <button className="button" onClick={onClick}>
-        Apply Now
-        <svg fill="currentColor" viewBox="0 0 24 24" className="icon">
-          <path clipRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" fillRule="evenodd" />
-        </svg>
-      </button>
-    </StyledWrapper>
-  );
-}
-
-const StyledWrapper = styled.div`
-  .button {
-    position: relative;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
-    padding: 0.35rem 0.8rem;
-    background-color: rgb(0 107 179);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #ffff;
-    gap: 6px;
-    font-weight: bold;
-    border: 2px solid #ffffff4d;
-    outline: none;
-    overflow: hidden;
-    font-size: 13px;
-    min-width: 100px;
-    height: 32px;
-  }
-
-  .icon {
-    width: 18px;
-    height: 18px;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .button:hover {
-    transform: scale(1.03);
-    border-color: #fff9;
-  }
-
-  .button:hover .icon {
-    transform: translate(3px);
-  }
-
-  .button:hover::before {
-    animation: shine 1.5s ease-out infinite;
-  }
-
-  .button::before {
-    content: "";
-    position: absolute;
-    width: 80px;
-    height: 100%;
-    background-image: linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0) 30%,
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0) 70%
-    );
-    top: 0;
-    left: -80px;
-    opacity: 0.6;
-  }
-
-  @keyframes shine {
-    0% {
-      left: -80px;
-    }
-    60% {
-      left: 100%;
-    }
-    to {
-      left: 100%;
-    }
-  }
-`;
 
 const JobDashboard = () => {
   const { user } = useAuth();
@@ -192,10 +108,12 @@ const JobDashboard = () => {
   };
 
   const getBadgeStyle = (type: string, value: string) => {
+    // For Remote OK badge
     if (type === 'remote') {
       return 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200';
     }
     
+    // For experience levels
     if (type === 'experience') {
       switch (value.toLowerCase()) {
         case 'entry':
@@ -211,6 +129,7 @@ const JobDashboard = () => {
       }
     }
     
+    // Default badge style
     return 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200';
   };
 
@@ -297,7 +216,13 @@ const JobDashboard = () => {
                   <Clock className="h-3 w-3 mr-1" />
                   {new Date(job.created_at).toLocaleDateString()}
                 </div>
-                <StyledButton onClick={() => handleApplyClick(job)} />
+                <Button 
+                  onClick={() => handleApplyClick(job)}
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Apply Now
+                </Button>
               </div>
             </CardContent>
           </Card>

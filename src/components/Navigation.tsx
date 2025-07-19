@@ -5,6 +5,7 @@ import { Home, User, Settings, MessageSquare, Menu } from 'lucide-react';
 import ProfileMenu from './ProfileMenu';
 import logo from './assets/Screenshot_2025-07-19_at_2.36.50_PM-removebg-preview.png';
 
+
 const Navigation = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
