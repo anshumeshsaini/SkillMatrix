@@ -1,11 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users, Search, Filter } from 'lucide-react';
+import { Users, Search, Filter, ChevronDown, ChevronUp, Star, MapPin, Briefcase, CircleDot } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Candidate {
   id: string;
@@ -13,6 +13,7 @@ interface Candidate {
     full_name: string;
     email: string;
     location: string;
+    avatar_url?: string;
   };
   experience_years: number;
   availability_status: string;
@@ -35,6 +36,7 @@ const DynamicSkillMatrix = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -44,7 +46,6 @@ const DynamicSkillMatrix = () => {
     try {
       setLoading(true);
 
-      // Fetch candidates with profiles
       const { data: candidatesData, error: candidatesError } = await supabase
         .from('candidates')
         .select(`
@@ -54,14 +55,14 @@ const DynamicSkillMatrix = () => {
           profiles (
             full_name,
             email,
-            location
+            location,
+            avatar_url
           )
         `)
         .eq('availability_status', 'open');
 
       if (candidatesError) throw candidatesError;
 
-      // Fetch all skills
       const { data: skillsData, error: skillsError } = await supabase
         .from('skills')
         .select('*')
@@ -69,7 +70,6 @@ const DynamicSkillMatrix = () => {
 
       if (skillsError) throw skillsError;
 
-      // Fetch candidate skills
       const { data: candidateSkillsData, error: candidateSkillsError } = await supabase
         .from('candidate_skills')
         .select(`
@@ -85,7 +85,6 @@ const DynamicSkillMatrix = () => {
 
       if (candidateSkillsError) throw candidateSkillsError;
 
-      // Group candidate skills by candidate ID
       const skillsByCandidate: Record<string, CandidateSkill[]> = {};
       candidateSkillsData?.forEach(skill => {
         if (!skillsByCandidate[skill.candidate_id]) {
@@ -127,12 +126,12 @@ const DynamicSkillMatrix = () => {
 
   const getProficiencyColor = (level: number) => {
     switch (level) {
-      case 1: return 'bg-red-100 text-red-800 border-red-200';
-      case 2: return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 3: return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 4: return 'bg-green-100 text-green-800 border-green-200';
-      case 5: return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 1: return 'bg-blue-50 border-blue-100 text-blue-800'; // Beginner
+      case 2: return 'bg-blue-100 border-blue-200 text-blue-800'; // Basic
+      case 3: return 'bg-blue-200 border-blue-300 text-blue-900'; // Intermediate
+      case 4: return 'bg-blue-300 border-blue-400 text-blue-900'; // Advanced
+      case 5: return 'bg-blue-500 border-blue-600 text-white';    // Expert
+      default: return 'bg-blue-50 border-blue-100 text-blue-800';
     }
   };
 
@@ -147,59 +146,102 @@ const DynamicSkillMatrix = () => {
     }
   };
 
+  const toggleCandidateExpansion = (id: string) => {
+    setExpandedCandidate(expandedCandidate === id ? null : id);
+  };
+
   if (loading) {
     return (
-      <Card className="gradient-card animate-fade-in">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Users className="h-5 w-5" />
-            <span>Dynamic Skill Matrix</span>
-          </CardTitle>
-          <CardDescription>Loading candidate data...</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden animate-fade-in">
+        <div className="p-6">
+          <div className="flex items-center space-x-3 mb-4">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <div>
+              <Skeleton className="h-6 w-48 mb-1" />
+              <Skeleton className="h-4 w-64" />
+            </div>
           </div>
-        </CardContent>
-      </Card>
+          
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="p-4 border border-blue-100 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div>
+                      <Skeleton className="h-4 w-32 mb-2" />
+                      <Skeleton className="h-3 w-48" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[...Array(4)].map((_, j) => (
+                    <Skeleton key={j} className="h-6 w-24 rounded-full" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="gradient-card animate-fade-in">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <Users className="h-5 w-5" />
-          <span>Dynamic Skill Matrix</span>
-        </CardTitle>
-        <CardDescription>
-          Interactive visualization of candidates and their skill proficiencies
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden animate-fade-in">
+      <div className="p-6">
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="p-2 rounded-lg bg-blue-100 text-blue-800">
+            <Users className="h-6 w-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-blue-800">Talent Skill Matrix</h2>
+            <p className="text-sm text-blue-600">
+              Interactive visualization of candidates and their skill proficiencies
+            </p>
+          </div>
+        </div>
+
+        {/* Proficiency Level Legend */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-blue-800 mb-2">Proficiency Levels:</h3>
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5].map((level) => (
+              <div
+                key={level}
+                className={`px-3 py-1 rounded-full text-xs font-medium border ${getProficiencyColor(level)}`}
+              >
+                {getProficiencyLabel(level)}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400 h-4 w-4" />
               <Input
                 placeholder="Search candidates or skills..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-white border-blue-100"
               />
             </div>
           </div>
           <div className="w-full sm:w-48">
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger>
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="All Categories" />
+              <SelectTrigger className="bg-white border-blue-100">
+                <div className="flex items-center">
+                  <Filter className="h-4 w-4 mr-2 text-blue-500" />
+                  <SelectValue placeholder="All Categories" />
+                </div>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border-blue-100">
                 {getSkillCategories().map(category => (
-                  <SelectItem key={category} value={category}>
+                  <SelectItem key={category} value={category} className="hover:bg-blue-50">
                     {category === 'all' ? 'All Categories' : category}
                   </SelectItem>
                 ))}
@@ -209,73 +251,111 @@ const DynamicSkillMatrix = () => {
         </div>
 
         {/* Candidates Grid */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredCandidates.length === 0 ? (
-            <div className="text-center py-8 text-slate-600 dark:text-slate-400">
-              No candidates found matching your criteria.
+            <div className="text-center py-8 text-blue-600">
+              <div className="mx-auto w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
+                <Search className="h-6 w-6 text-blue-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-1">No candidates found</h3>
+              <p className="text-sm">Try adjusting your search or filter criteria</p>
             </div>
           ) : (
             filteredCandidates.map((candidate) => (
               <div
                 key={candidate.id}
-                className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md transition-shadow"
+                className="border border-blue-100 rounded-lg overflow-hidden transition-all"
               >
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-white">
-                      {candidate.profiles?.full_name || 'Anonymous'}
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {candidate.experience_years} years experience • {candidate.profiles?.location}
-                    </p>
+                <div 
+                  className="p-4 hover:bg-blue-50 cursor-pointer transition-colors"
+                  onClick={() => toggleCandidateExpansion(candidate.id)}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-3">
+                      {candidate.profiles?.avatar_url ? (
+                        <img 
+                          src={candidate.profiles.avatar_url} 
+                          alt={candidate.profiles.full_name}
+                          className="h-10 w-10 rounded-full object-cover border border-blue-100"
+                        />
+                      ) : (
+                        <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                          {candidate.profiles?.full_name?.charAt(0) || 'A'}
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold text-blue-800">
+                          {candidate.profiles?.full_name || 'Anonymous'}
+                        </h3>
+                        <div className="flex items-center text-sm text-blue-600 space-x-2">
+                          <span className="flex items-center">
+                            <Briefcase className="h-3 w-3 mr-1" />
+                            {candidate.experience_years} yrs
+                          </span>
+                          <span className="flex items-center">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            {candidate.profiles?.location || 'Remote'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge 
+                        variant={candidate.availability_status === 'open' ? 'default' : 'secondary'}
+                        className={`${candidate.availability_status === 'open' ? 'bg-blue-100 text-blue-800' : 'bg-blue-50 text-blue-800'}`}
+                      >
+                        {candidate.availability_status}
+                      </Badge>
+                      {expandedCandidate === candidate.id ? (
+                        <ChevronUp className="h-4 w-4 text-blue-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-blue-500" />
+                      )}
+                    </div>
                   </div>
-                  <Badge 
-                    variant={candidate.availability_status === 'open' ? 'default' : 'secondary'}
-                    className={candidate.availability_status === 'open' ? 'bg-green-100 text-green-800' : ''}
-                  >
-                    {candidate.availability_status}
-                  </Badge>
                 </div>
 
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2">
-                  {candidateSkills[candidate.id]?.map((skill) => (
-                    <Badge
-                      key={skill.skill_id}
-                      variant="outline"
-                      className={`${getProficiencyColor(skill.proficiency_level)} border`}
-                    >
-                      {skill.skills.name} • {getProficiencyLabel(skill.proficiency_level)}
-                      {skill.years_experience > 0 && ` (${skill.years_experience}y)`}
-                    </Badge>
-                  )) || (
-                    <span className="text-sm text-slate-500 italic">No skills listed</span>
-                  )}
-                </div>
+                {expandedCandidate === candidate.id && (
+                  <div className="border-t border-blue-100 p-4 bg-blue-50">
+                    <div className="mb-3">
+                      <h4 className="text-sm font-medium text-blue-800 mb-2 flex items-center">
+                        <CircleDot className="h-3 w-3 mr-2 text-blue-600" />
+                        Contact Information
+                      </h4>
+                      <p className="text-sm text-blue-600">
+                        {candidate.profiles?.email || 'No email provided'}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-medium text-blue-800 mb-2 flex items-center">
+                        <Star className="h-3 w-3 mr-2 text-blue-600" />
+                        Skills & Proficiencies
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {candidateSkills[candidate.id]?.length > 0 ? (
+                          candidateSkills[candidate.id]?.map((skill) => (
+                            <div
+                              key={skill.skill_id}
+                              className={`px-3 py-1 rounded-full text-xs font-medium border ${getProficiencyColor(skill.proficiency_level)}`}
+                            >
+                              {skill.skills.name} • {getProficiencyLabel(skill.proficiency_level)}
+                              {skill.years_experience > 0 && ` • ${skill.years_experience}y`}
+                            </div>
+                          ))
+                        ) : (
+                          <span className="text-sm text-blue-500 italic">No skills listed</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))
           )}
         </div>
-
-        {/* Legend */}
-        <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
-          <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">
-            Proficiency Levels:
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {[1, 2, 3, 4, 5].map((level) => (
-              <Badge
-                key={level}
-                variant="outline"
-                className={`${getProficiencyColor(level)} border text-xs`}
-              >
-                {getProficiencyLabel(level)}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

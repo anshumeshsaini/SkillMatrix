@@ -1,0 +1,31 @@
+/* Make placeholder text black */
+input::placeholder,
+select::placeholder {
+    color: black !important;
+    opacity: 1 !important;
+}
+
+/* Make dropdown text black */
+select {
+    color: black !important;
+}
+
+/* Make section headers black by default */
+h2, h3 {
+    color: black !important;
+}
+
+/* Make checkbox labels black */
+label {
+    color: black !important;
+}
+
+/* Make existing text black */
+body, p, div {
+    color: black !important;
+}
+
+/* Style the input fields to show black text */
+input, select {
+    color: black !important;
+}
