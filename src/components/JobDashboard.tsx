@@ -142,9 +142,9 @@ const JobDashboard = () => {
   }
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg">
+    <div className="space-y-6 bg-white p-4 md:p-6 rounded-lg">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-blue-800">Recommended for you</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-blue-800">Recommended for you</h2>
         <div className="flex items-center gap-4">
           <div className="text-sm text-blue-600">
            
@@ -152,27 +152,30 @@ const JobDashboard = () => {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (
-          <Card key={job.id} className="hover:shadow-lg transition-shadow border border-blue-50">
+          <Card 
+            key={job.id} 
+            className="hover:shadow-lg transition-shadow border border-gray-200 bg-white"
+          >
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Building className="h-6 w-6 text-white" />
+                  <div className="h-10 w-10 md:h-12 md:w-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <Building className="h-5 w-5 md:h-6 md:w-6 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-blue-900">{job.title}</CardTitle>
-                    <p className="text-sm text-blue-700">{job.company.company_name}</p>
+                    <CardTitle className="text-base md:text-lg text-blue-900">{job.title}</CardTitle>
+                    <p className="text-xs md:text-sm text-blue-700">{job.company.company_name}</p>
                   </div>
                 </div>
               </div>
             </CardHeader>
             
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-4 text-sm text-blue-600">
+            <CardContent className="space-y-3 md:space-y-4">
+              <div className="flex items-center space-x-2 md:space-x-4 text-xs md:text-sm text-blue-600">
                 <div className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-1" />
+                  <MapPin className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   {job.location}
                 </div>
                 {job.remote_allowed && (
@@ -182,9 +185,9 @@ const JobDashboard = () => {
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-xs md:text-sm">
                 <div className="flex items-center text-blue-600">
-                  <DollarSign className="h-4 w-4 mr-1" />
+                  <DollarSign className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   {formatSalary(job.salary_min, job.salary_max)}
                 </div>
                 <Badge className={getBadgeStyle('experience', job.experience_level)}>
@@ -192,19 +195,26 @@ const JobDashboard = () => {
                 </Badge>
               </div>
 
-              <p className="text-sm text-gray-700 line-clamp-3">
+              <p className="text-xs md:text-sm text-gray-700 line-clamp-3">
                 {job.description}
               </p>
 
               {job.job_skills && job.job_skills.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {job.job_skills.slice(0, 3).map((jobSkill, index) => (
-                    <Badge key={index} variant="outline" className="text-xs border-blue-200 text-blue-700">
+                    <Badge 
+                      key={index} 
+                      variant="outline" 
+                      className="text-xs border-blue-200 text-blue-700"
+                    >
                       {jobSkill.skill.name}
                     </Badge>
                   ))}
                   {job.job_skills.length > 3 && (
-                    <Badge variant="outline" className="text-xs border-blue-200 text-blue-700">
+                    <Badge 
+                      variant="outline" 
+                      className="text-xs border-blue-200 text-blue-700"
+                    >
                       +{job.job_skills.length - 3} more
                     </Badge>
                   )}
@@ -219,7 +229,7 @@ const JobDashboard = () => {
                 <Button 
                   onClick={() => handleApplyClick(job)}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm"
                 >
                   Apply Now
                 </Button>
@@ -230,11 +240,11 @@ const JobDashboard = () => {
       </div>
 
       {jobs.length === 0 && (
-        <Card className="border-blue-50">
-          <CardContent className="text-center py-12">
-            <Users className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-blue-800 mb-2">No jobs available</h3>
-            <p className="text-blue-600">Check back later for new opportunities!</p>
+        <Card className="border-gray-200 bg-white">
+          <CardContent className="text-center py-8 md:py-12">
+            <Users className="h-10 w-10 md:h-12 md:w-12 text-blue-400 mx-auto mb-3 md:mb-4" />
+            <h3 className="text-base md:text-lg font-medium text-blue-800 mb-1 md:mb-2">No jobs available</h3>
+            <p className="text-sm md:text-base text-blue-600">Check back later for new opportunities!</p>
           </CardContent>
         </Card>
       )}
