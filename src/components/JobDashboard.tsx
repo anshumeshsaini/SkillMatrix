@@ -203,22 +203,7 @@ const JobDashboard = () => {
         </div>
 
         {/* Featured Jobs Banner */}
-        {filteredJobs.length > 0 && (
-          <div className="mb-8 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-100 rounded-2xl p-6 flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="bg-purple-100 p-3 rounded-xl">
-                <Zap className="h-6 w-6 text-purple-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-purple-800">New Hot Jobs</h3>
-                <p className="text-sm text-purple-600">Recently posted high-demand positions</p>
-              </div>
-            </div>
-            <Button variant="link" className="text-purple-600 hover:text-purple-700">
-              View all <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        )}
+       
 
         {/* Jobs Grid */}
         {filteredJobs.length > 0 ? (
