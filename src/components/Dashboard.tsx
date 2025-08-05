@@ -11,7 +11,7 @@ import Lottie from 'lottie-react';
 import animationData from './animations/confetti.json';
 import waveAnimation from './animations/Wave.json';
 import notificationAnimation from './animations/Notification-bell.json';
-import successAnimation from './animations/Sucess-check.json';
+import successAnimation from './animations/sucess-check.json';
 import particleAnimation from './animations/Particlees.json';
 
 const CertificationWidget = () => {
