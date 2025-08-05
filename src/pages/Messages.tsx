@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Send, Video, Phone, Clock, Mail, Search, ChevronDown, MoreVertical, Smile, Paperclip, Mic, Calendar, UserPlus } from 'lucide-react';
+import { Send, Video, Phone, Clock, Mail, Search, ChevronDown, MoreVertical, Smile, Paperclip, Mic, Calendar, UserPlus, X, Maximize2, Minimize2, Menu, Plus, Check, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import VideoCallModal from '@/components/VideoCallModal';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Separator } from '@/components/ui/separator';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/Navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
   id: string;
@@ -69,6 +70,27 @@ const Messages = () => {
   const [videoCallModalOpen, setVideoCallModalOpen] = useState(false);
   const [currentVideoCall, setCurrentVideoCall] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Scroll to bottom of messages
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Focus input when conversation is selected
+  useEffect(() => {
+    if (selectedConversation) {
+      inputRef.current?.focus();
+    }
+  }, [selectedConversation]);
 
   useEffect(() => {
     if (user) {
@@ -183,8 +205,9 @@ const Messages = () => {
   };
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedConversation) return;
+    if (!newMessage.trim() || !selectedConversation || isSending) return;
 
+    setIsSending(true);
     try {
       const { error } = await supabase
         .from('messages')
@@ -198,7 +221,7 @@ const Messages = () => {
       if (error) throw error;
 
       setNewMessage('');
-      fetchMessages(selectedConversation);
+      await fetchMessages(selectedConversation);
       fetchConversations();
     } catch (error) {
       console.error('Error sending message:', error);
@@ -207,6 +230,8 @@ const Messages = () => {
         description: "Failed to send message",
         variant: "destructive"
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -261,13 +286,21 @@ const Messages = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+      <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-950">
         <Navigation />
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-pulse flex flex-col items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 animate-pulse"></div>
-            <div className="h-4 w-48 rounded bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 animate-pulse"></div>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="animate-pulse flex flex-col items-center gap-4"
+          >
+            <div className="relative">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 animate-pulse"></div>
+              <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-4 border-white dark:border-slate-900 bg-gradient-to-r from-emerald-400 to-teal-500 animate-pulse"></div>
+            </div>
+            <div className="h-4 w-48 rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 animate-pulse"></div>
+          </motion.div>
         </div>
         <Footer />
       </div>
@@ -275,171 +308,252 @@ const Messages = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-950">
       <Navigation />
       
       <main className="flex-1 p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Messages
-            </h1>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex items-center gap-2 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 border-slate-200 dark:border-slate-700"
-              >
-                <Mail className="h-4 w-4" />
-                <span>All Messages</span>
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
-              >
-                <UserPlus className="h-4 w-4" />
-                <span>New Chat</span>
-              </Button>
+          {/* Header with animated gradient */}
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center justify-between mb-6"
+          >
+            <div>
+              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-gradient-x">
+                Messages
+              </h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Connect and collaborate with your network
+              </p>
             </div>
-          </div>
+            <div className="flex items-center gap-2">
+              
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-lg hover:shadow-blue-500/30 transition-all"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>New Chat</span>
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
           
+          {/* Main content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)]">
-            {/* Conversations List */}
-            <div className="lg:col-span-4">
-              <Card className="h-full border-0 shadow-xl rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
-                <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-5">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-white font-semibold text-xl">Conversations</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 rounded-full">
-                              <Calendar className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Schedule meeting</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 rounded-full">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>More options</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </div>
-                  <div className="relative mt-4">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/80" />
-                    <Input
-                      placeholder="Search conversations..."
-                      className="pl-10 bg-white/20 border-none text-white placeholder:text-white/80 focus-visible:ring-white/30 rounded-full"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0 h-[calc(100%-96px)]">
-                  <ScrollArea className="h-full">
-                    {filteredConversations.length > 0 ? (
-                      <div className="divide-y divide-slate-100 dark:divide-slate-700/50">
-                        {filteredConversations.map((conversation) => (
-                          <div
-                            key={conversation.other_user_id}
-                            className={cn(
-                              "p-4 cursor-pointer transition-all duration-200 hover:bg-blue-50/50 dark:hover:bg-slate-700/50 group",
-                              selectedConversation === conversation.other_user_id 
-                                ? 'bg-blue-50/80 dark:bg-slate-700/70 border-l-4 border-blue-500' 
-                                : ''
-                            )}
-                            onClick={() => setSelectedConversation(conversation.other_user_id)}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div className="relative">
-                                <Avatar className="border-2 border-white shadow-lg group-hover:border-blue-100 transition-all duration-200">
-                                  <AvatarImage src={conversation.avatar_url} />
-                                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                                    {conversation.other_user_name.charAt(0).toUpperCase()}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white bg-green-500"></div>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between">
-                                  <p className="font-medium truncate text-slate-800 dark:text-slate-100">
-                                    {conversation.other_user_name}
-                                  </p>
-                                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    {new Date(conversation.last_message_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                  </p>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
-                                    {conversation.last_message.length > 30 
-                                      ? `${conversation.last_message.substring(0, 30)}...` 
-                                      : conversation.last_message}
-                                  </p>
-                                  {conversation.unread_count > 0 && (
-                                    <Badge className="ml-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                                      {conversation.unread_count}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-                        <div className="relative mb-6">
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 rounded-full opacity-20 blur-lg"></div>
-                          <Mail className="relative h-12 w-12 text-blue-500 dark:text-blue-400" />
-                        </div>
-                        <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          No conversations found
-                        </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                          {searchQuery ? 'Try a different search term' : 'Start a new conversation'}
-                        </p>
-                        <Button className="mt-6 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
-                          Start New Chat
-                        </Button>
-                      </div>
-                    )}
-                  </ScrollArea>
-                </CardContent>
-              </Card>
+            {/* Conversations List - Mobile Menu Button */}
+            <div className="lg:hidden flex justify-between items-center mb-4">
+              <Button 
+                variant="ghost" 
+                className="flex items-center gap-2"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="h-5 w-5" />
+                <span>Conversations</span>
+              </Button>
+              {selectedConversation && (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setSelectedConversation(null)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              )}
             </div>
 
+            {/* Conversations List */}
+            <AnimatePresence>
+              {(isMobileMenuOpen || !selectedConversation || !isMobileMenuOpen) && (
+                <motion.div 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className={cn(
+                    "lg:col-span-4",
+                    selectedConversation ? "hidden lg:block" : "block"
+                  )}
+                >
+                  <Card className="h-full border-0 shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-sm dark:bg-slate-800/90 transition-all duration-300 hover:shadow-xl">
+                    <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-3xl">
+                      <div className="flex items-center justify-between">
+                        <motion.div whileHover={{ scale: 1.02 }}>
+                          <CardTitle className="text-white font-semibold text-xl flex items-center gap-2">
+                            <Mail className="h-5 w-5" />
+                            <span>Conversations</span>
+                          </CardTitle>
+                        </motion.div>
+                        <div className="flex items-center gap-1">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 rounded-full">
+                                    <Calendar className="h-4 w-4" />
+                                  </Button>
+                                </motion.div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Schedule meeting</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 rounded-full">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </motion.div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>More options</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </div>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="relative mt-4"
+                      >
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/80" />
+                        <Input
+                          placeholder="Search conversations..."
+                          className="pl-10 bg-white/20 border-none text-white placeholder:text-white/80 focus-visible:ring-white/30 rounded-full shadow-inner"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </motion.div>
+                    </CardHeader>
+                    <CardContent className="p-0 h-[calc(100%-96px)]">
+                      <ScrollArea className="h-full">
+                        {filteredConversations.length > 0 ? (
+                          <div className="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            {filteredConversations.map((conversation) => (
+                              <motion.div
+                                key={conversation.other_user_id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className={cn(
+                                  "p-4 cursor-pointer transition-all duration-300 hover:bg-blue-50/50 dark:hover:bg-slate-700/50 group",
+                                  selectedConversation === conversation.other_user_id 
+                                    ? 'bg-gradient-to-r from-blue-50/80 to-blue-100/50 dark:from-slate-700/70 dark:to-slate-700/50 border-l-4 border-blue-500' 
+                                    : ''
+                                )}
+                                onClick={() => {
+                                  setSelectedConversation(conversation.other_user_id);
+                                  setIsMobileMenuOpen(false);
+                                }}
+                                whileHover={{ scale: 1.005 }}
+                              >
+                                <div className="flex items-center space-x-3">
+                                  <div className="relative">
+                                    <motion.div whileHover={{ scale: 1.1 }}>
+                                      <Avatar className="border-2 border-white shadow-lg group-hover:border-blue-100 dark:group-hover:border-blue-900 transition-all duration-300">
+                                        <AvatarImage src={conversation.avatar_url} />
+                                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+                                          {conversation.other_user_name.charAt(0).toUpperCase()}
+                                        </AvatarFallback>
+                                      </Avatar>
+                                    </motion.div>
+                                    <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-r from-emerald-400 to-teal-500 animate-pulse"></div>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between">
+                                      <p className="font-medium truncate text-slate-800 dark:text-slate-100">
+                                        {conversation.other_user_name}
+                                      </p>
+                                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                                        {new Date(conversation.last_message_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                      </p>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
+                                        {conversation.last_message.length > 30 
+                                          ? `${conversation.last_message.substring(0, 30)}...` 
+                                          : conversation.last_message}
+                                      </p>
+                                      {conversation.unread_count > 0 && (
+                                        <motion.div 
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                                        >
+                                          <Badge className="ml-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm">
+                                            {conversation.unread_count}
+                                          </Badge>
+                                        </motion.div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ) : (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="flex flex-col items-center justify-center h-full p-8 text-center"
+                          >
+                            <div className="relative mb-6">
+                              <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 rounded-full opacity-20 blur-lg"></div>
+                              <Mail className="relative h-12 w-12 text-blue-500 dark:text-blue-400" />
+                            </div>
+                            <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">
+                              No conversations found
+                            </h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                              {searchQuery ? 'Try a different search term' : 'Start a new conversation'}
+                            </p>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-6">
+                              <Button className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-md">
+                                Start New Chat
+                              </Button>
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </ScrollArea>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Messages */}
-            <div className="lg:col-span-8">
-              <Card className="h-full border-0 shadow-xl rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <div className={cn(
+              "lg:col-span-8",
+              !selectedConversation ? "hidden lg:block" : "block"
+            )}>
+              <Card className="h-full border-0 shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-sm dark:bg-slate-800/90 transition-all duration-300 hover:shadow-xl">
                 {selectedConversation ? (
                   <>
-                    <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-5">
+                    <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-3xl">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className="relative">
-                            <Avatar className="border-2 border-white shadow-lg">
-                              <AvatarImage src={
-                                conversations.find(c => c.other_user_id === selectedConversation)?.avatar_url
-                              } />
-                              <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                                {conversations.find(c => c.other_user_id === selectedConversation)?.other_user_name.charAt(0).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white bg-green-500"></div>
+                            <motion.div whileHover={{ scale: 1.1 }}>
+                              <Avatar className="border-2 border-white shadow-lg">
+                                <AvatarImage src={
+                                  conversations.find(c => c.other_user_id === selectedConversation)?.avatar_url
+                                } />
+                                <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+                                  {conversations.find(c => c.other_user_id === selectedConversation)?.other_user_name.charAt(0).toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                            </motion.div>
+                            <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white dark:border-slate-800 bg-gradient-to-r from-emerald-400 to-teal-500 animate-pulse"></div>
                           </div>
                           <div>
                             <CardTitle className="text-white">
@@ -455,14 +569,16 @@ const Messages = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-white hover:bg-white/10 rounded-full"
-                                  onClick={startVideoCall}
-                                >
-                                  <Video className="h-5 w-5" />
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="text-white hover:bg-white/10 rounded-full"
+                                    onClick={startVideoCall}
+                                  >
+                                    <Video className="h-5 w-5" />
+                                  </Button>
+                                </motion.div>
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>Start video call</p>
@@ -472,13 +588,15 @@ const Messages = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-white hover:bg-white/10 rounded-full"
-                                >
-                                  <Phone className="h-5 w-5" />
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="text-white hover:bg-white/10 rounded-full"
+                                  >
+                                    <Phone className="h-5 w-5" />
+                                  </Button>
+                                </motion.div>
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>Voice call</p>
@@ -488,16 +606,19 @@ const Messages = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-white hover:bg-white/10 rounded-full"
-                                >
-                                  <MoreVertical className="h-5 w-5" />
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="text-white hover:bg-white/10 rounded-full"
+                                    onClick={() => setIsFullscreen(!isFullscreen)}
+                                  >
+                                    {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                                  </Button>
+                                </motion.div>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>More options</p>
+                                <p>{isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
@@ -506,22 +627,26 @@ const Messages = () => {
                     </CardHeader>
                     <CardContent className="flex flex-col h-[calc(100%-80px)] p-0">
                       {/* Messages Container */}
-                      <div className="relative">
+                      <div className="relative flex-1">
                         <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5 dark:opacity-[0.02]"></div>
                         <ScrollArea className="flex-1 p-6 h-[calc(100vh-300px)]">
                           <div className="space-y-6">
                             {messages.map((message) => (
-                              <div
+                              <motion.div
                                 key={message.id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
                                 className={cn(
                                   "flex",
                                   message.sender_id === user?.id ? 'justify-end' : 'justify-start'
                                 )}
                               >
-                                <div
+                                <motion.div
+                                  whileHover={{ scale: 1.02 }}
                                   className={cn(
                                     "max-w-xs lg:max-w-md px-5 py-3 rounded-3xl relative",
-                                    "shadow-sm transition-all duration-200",
+                                    "shadow-sm transition-all duration-300",
                                     message.sender_id === user?.id
                                       ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-br-none'
                                       : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-bl-none shadow-md',
@@ -534,22 +659,24 @@ const Messages = () => {
                                         <Video className="h-5 w-5" />
                                         <Badge variant="secondary">Video Call Invitation</Badge>
                                       </div>
-                                      <Button 
-                                        variant={message.sender_id === user?.id ? "secondary" : "default"}
-                                        size="sm"
-                                        className="w-full"
-                                        onClick={() => {
-                                          setCurrentVideoCall({
-                                            id: message.video_call_id,
-                                            room_id: `room_${message.id}`,
-                                            host_id: message.sender_id,
-                                            guest_id: message.receiver_id
-                                          });
-                                          setVideoCallModalOpen(true);
-                                        }}
-                                      >
-                                        {message.sender_id === user?.id ? 'Waiting for response...' : 'Join Video Call'}
-                                      </Button>
+                                      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                        <Button 
+                                          variant={message.sender_id === user?.id ? "secondary" : "default"}
+                                          size="sm"
+                                          className="w-full"
+                                          onClick={() => {
+                                            setCurrentVideoCall({
+                                              id: message.video_call_id,
+                                              room_id: `room_${message.id}`,
+                                              host_id: message.sender_id,
+                                              guest_id: message.receiver_id
+                                            });
+                                            setVideoCallModalOpen(true);
+                                          }}
+                                        >
+                                          {message.sender_id === user?.id ? 'Waiting for response...' : 'Join Video Call'}
+                                        </Button>
+                                      </motion.div>
                                     </div>
                                   )}
                                   <p className="text-sm">{message.content}</p>
@@ -570,9 +697,10 @@ const Messages = () => {
                                       ? '-right-4 bg-gradient-to-r from-blue-500 to-indigo-500 clip-triangle-right'
                                       : '-left-4 bg-white dark:bg-slate-700 clip-triangle-left shadow-md'
                                   )}></div>
-                                </div>
-                              </div>
+                                </motion.div>
+                              </motion.div>
                             ))}
+                            <div ref={messagesEndRef} />
                           </div>
                         </ScrollArea>
                       </div>
@@ -580,64 +708,89 @@ const Messages = () => {
                       {/* Message Input */}
                       <div className="p-4 border-t border-slate-100 dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
                         <div className="flex gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
-                          >
-                            <Paperclip className="h-5 w-5" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
-                          >
-                            <Smile className="h-5 w-5" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
-                          >
-                            <Mic className="h-5 w-5" />
-                          </Button>
+                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                            >
+                              <Paperclip className="h-5 w-5" />
+                            </Button>
+                          </motion.div>
+                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                            >
+                              <Smile className="h-5 w-5" />
+                            </Button>
+                          </motion.div>
+                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                            >
+                              <Mic className="h-5 w-5" />
+                            </Button>
+                          </motion.div>
                           <Input
+                            ref={inputRef}
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             placeholder="Type your message here..."
                             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                            className="flex-1 rounded-full bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500/30"
+                            className="flex-1 rounded-full bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-700 focus-visible:ring-2 focus-visible:ring-blue-500/30 shadow-inner"
                           />
-                          <Button 
-                            onClick={sendMessage} 
-                            size="sm" 
-                            className="rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-md"
-                          >
-                            <Send className="h-5 w-5" />
-                          </Button>
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button 
+                              onClick={sendMessage} 
+                              size="sm" 
+                              disabled={isSending}
+                              className="rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-md"
+                            >
+                              {isSending ? (
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                              ) : (
+                                <Send className="h-5 w-5" />
+                              )}
+                            </Button>
+                          </motion.div>
                         </div>
                       </div>
                     </CardContent>
                   </>
                 ) : (
                   <CardContent className="flex flex-col items-center justify-center h-full p-8">
-                    <div className="relative mb-8">
+                    <motion.div 
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="relative mb-8"
+                    >
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-800 dark:to-indigo-800 rounded-full opacity-20 blur-xl animate-pulse"></div>
                       <div className="relative bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-slate-800 dark:to-slate-700 p-6 rounded-2xl shadow-inner">
                         <Mail className="h-12 w-12 text-blue-500 dark:text-blue-400" />
                       </div>
-                    </div>
+                    </motion.div>
                     <h3 className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Select a conversation
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400 text-center max-w-md">
                       Choose an existing conversation from the sidebar or start a new one to begin messaging.
                     </p>
-                    <Button 
-                      className="mt-6 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-md"
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }} 
+                      whileTap={{ scale: 0.95 }}
+                      className="mt-6"
                     >
-                      Start New Chat
-                    </Button>
+                      <Button 
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 shadow-md"
+                      >
+                        Start New Chat
+                      </Button>
+                    </motion.div>
                   </CardContent>
                 )}
               </Card>
