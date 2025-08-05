@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Zap, Award, TrendingUp, BookOpen, BarChart2 } from 'lucide-react';
 import Lottie from 'lottie-react';
-import waveAnimation from './animations/wave.json';
-import particleAnimation from './animations/particlees.json';
+import waveAnimation from './animations/Wave.json';
+import particleAnimation from './animations/Particlees.json';
 
 interface ImageSliderProps {
   images: string[];
