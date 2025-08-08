@@ -34,17 +34,17 @@ const CertificationWidget = () => {
       {!expanded && (
         <div 
           onClick={toggleWidget}
-          className="bg-gradient-to-br from-indigo-600/90 via-purple-600/90 to-blue-600/90 rounded-2xl p-4 shadow-2xl cursor-pointer hover:shadow-3xl transition-all flex items-center space-x-3 group hover:scale-105 transform-gpu backdrop-blur-md border border-white/20"
+          className="bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 rounded-full p-5 shadow-2xl cursor-pointer hover:shadow-3xl transition-all flex items-center space-x-3 group hover:scale-105 transform-gpu backdrop-blur-md border border-white/20"
           style={{
-            boxShadow: '0 10px 25px -5px rgba(99, 102, 241, 0.4)',
+            boxShadow: '0 15px 30px -5px rgba(16, 185, 129, 0.5)',
             backdropFilter: 'blur(12px)'
           }}
         >
           <div className="relative">
-            <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm border border-white/10">
+            <div className="bg-white/20 p-3 rounded-full backdrop-blur-sm border border-white/10">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
-            <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-white shadow-lg border-2 border-white">
+            <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center text-white shadow-lg border-2 border-white animate-pulse">
               <Lottie 
                 animationData={notificationAnimation}
                 loop={false}
@@ -54,8 +54,8 @@ const CertificationWidget = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-white">SkillMaster</h3>
-            <p className="text-sm text-white/80">Certification courses</p>
+            <h3 className="font-semibold text-white tracking-wide">SkillMaster Pro</h3>
+            <p className="text-xs text-white/80 font-light">Certification courses</p>
           </div>
           <ChevronDown className="w-5 h-5 text-white/60 group-hover:text-white transition-all duration-300 group-hover:translate-y-0.5" />
         </div>
@@ -63,34 +63,27 @@ const CertificationWidget = () => {
 
       {expanded && (
         <div 
-          className="bg-gradient-to-br from-indigo-600/90 via-purple-600/90 to-blue-600/90 rounded-2xl shadow-3xl overflow-hidden w-80 transition-all duration-500 transform-gpu backdrop-blur-md border border-white/20"
+          className="bg-gradient-to-br from-cyan-500/90 via-blue-600/90 to-indigo-700/90 rounded-3xl shadow-3xl overflow-hidden w-96 transition-all duration-500 transform-gpu backdrop-blur-md border border-white/20"
           style={{
-            boxShadow: '0 20px 50px -10px rgba(99, 102, 241, 0.5)',
-            backdropFilter: 'blur(12px)'
+            boxShadow: '0 25px 60px -15px rgba(16, 185, 129, 0.6)',
+            backdropFilter: 'blur(16px)'
           }}
         >
           <div 
             onClick={toggleWidget}
-            className="p-4 border-b border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors duration-300 relative overflow-hidden"
+            className="p-5 border-b border-white/20 flex items-center justify-between cursor-pointer hover:bg-white/10 transition-colors duration-300 relative overflow-hidden"
           >
-            <div className="absolute inset-0 opacity-20">
-              <Lottie 
-                animationData={waveAnimation}
-                loop={true}
-                autoplay={true}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-30"></div>
             <div className="flex items-center space-x-3 relative z-10">
-              <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm border border-white/10">
+              <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm border border-white/10">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-semibold text-white">SkillMaster Certifications</h3>
+              <h3 className="font-semibold text-white tracking-wide">SkillMaster Certifications</h3>
             </div>
             <ChevronUp className="w-5 h-5 text-white/60 hover:text-white transition-colors duration-300 relative z-10" />
           </div>
           
-          <div className="p-5 space-y-4 relative">
+          <div className="p-6 space-y-5 relative">
             <Lottie
               lottieRef={lottieRef}
               animationData={successAnimation}
@@ -103,18 +96,18 @@ const CertificationWidget = () => {
                 width: '100%',
                 height: '100%',
                 zIndex: 0,
-                opacity: 0.2
+                opacity: 0.15
               }}
             />
-            <div className="relative z-10">
-              <h4 className="text-lg font-medium text-white">Master in-demand skills</h4>
-              <p className="text-white/80 text-sm leading-relaxed">
-                Get govt.-accredited certification courses and level-up your resume with our industry-recognized programs.
+            <div className="relative z-10 space-y-4">
+              <h4 className="text-xl font-bold text-white tracking-wide">Master in-demand skills</h4>
+              <p className="text-white/90 text-sm leading-relaxed font-light">
+                Get government-accredited certification courses and level-up your resume with our industry-recognized programs.
               </p>
               
               <div className="pt-2">
                 <button 
-                  className="w-full bg-white text-indigo-600 py-3 px-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 hover:scale-[1.02] transform-gpu active:scale-95 font-medium"
+                  className="w-full bg-white text-cyan-600 py-3 px-4 rounded-xl hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 hover:scale-[1.02] transform-gpu active:scale-95 font-medium tracking-wide"
                   onClick={() => {
                     const element = document.getElementById('certification-courses');
                     if (element) {
@@ -126,7 +119,7 @@ const CertificationWidget = () => {
                     }
                   }}
                   style={{
-                    boxShadow: '0 4px 14px 0 rgba(255, 255, 255, 0.3)'
+                    boxShadow: '0 6px 20px 0 rgba(255, 255, 255, 0.4)'
                   }}
                 >
                   <span>Explore Courses</span>
@@ -149,7 +142,6 @@ const Dashboard = () => {
   const particleRef = useRef(null);
 
   useEffect(() => {
-    // Initialize particles animation
     if (particleRef.current) {
       particleRef.current.setSpeed(0.5);
     }
@@ -164,56 +156,54 @@ const Dashboard = () => {
     setTimeout(() => setShowConfetti(false), 3000);
   };
 
-  // Quick actions menu
   const QuickActions = () => {
     const actions = [
       { 
-        icon: <Briefcase className="w-5 h-5 text-blue-600" />, 
+        icon: <Briefcase className="w-5 h-5 text-cyan-600" />, 
         label: "Post Job", 
         action: () => setJobPostingModalOpen(true),
-        gradient: "from-blue-100/90 to-blue-200/90"
+        gradient: "from-cyan-100/90 to-blue-200/90"
       },
       { 
-        icon: <User className="w-5 h-5 text-purple-600" />, 
+        icon: <User className="w-5 h-5 text-indigo-600" />, 
         label: "Profile", 
         action: () => {},
-        gradient: "from-purple-100/90 to-purple-200/90"
+        gradient: "from-indigo-100/90 to-purple-200/90"
       },
       { 
-        icon: <Settings className="w-5 h-5 text-indigo-600" />, 
+        icon: <Settings className="w-5 h-5 text-blue-600" />, 
         label: "Settings", 
         action: () => {},
-        gradient: "from-indigo-100/90 to-indigo-200/90"
+        gradient: "from-blue-100/90 to-cyan-200/90"
       },
     ];
 
     return (
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         {actions.map((action, index) => (
           <button
             key={index}
             onClick={action.action}
-            className={`bg-gradient-to-br ${action.gradient} rounded-xl p-3 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition-all duration-300 border border-white/30 backdrop-blur-sm transform-gpu hover:-translate-y-1 hover:scale-105`}
+            className={`bg-gradient-to-br ${action.gradient} rounded-xl p-4 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition-all duration-300 border border-white/30 backdrop-blur-sm transform-gpu hover:-translate-y-1 hover:scale-105`}
           >
             <div className="bg-white p-2 rounded-lg shadow-xs">
               {action.icon}
             </div>
-            <span className="text-xs font-medium text-gray-700">{action.label}</span>
+            <span className="text-xs font-medium text-gray-700 tracking-wide">{action.label}</span>
           </button>
         ))}
       </div>
     );
   };
 
-  // Recent activity timeline
   const RecentActivity = () => {
     const activities = [
       { 
-        icon: <Zap className="w-4 h-4 text-yellow-500" />, 
+        icon: <Zap className="w-4 h-4 text-amber-500" />, 
         title: "New job match", 
         description: "Senior UX Designer at TechCorp", 
         time: "2 mins ago",
-        color: "bg-yellow-100/80"
+        color: "bg-amber-100/80"
       },
       { 
         icon: <Clock className="w-4 h-4 text-blue-500" />, 
@@ -223,28 +213,28 @@ const Dashboard = () => {
         color: "bg-blue-100/80"
       },
       { 
-        icon: <Calendar className="w-4 h-4 text-purple-500" />, 
+        icon: <Calendar className="w-4 h-4 text-indigo-500" />, 
         title: "Application deadline", 
         description: "Frontend Developer role closes tomorrow", 
         time: "3 hours ago",
-        color: "bg-purple-100/80"
+        color: "bg-indigo-100/80"
       },
     ];
 
     return (
       <div className="space-y-4">
-        <h3 className="font-medium text-gray-700">Recent Activity</h3>
+        <h3 className="font-medium text-gray-700 tracking-wide">Recent Activity</h3>
         <div className="space-y-3">
           {activities.map((activity, index) => (
-            <div key={index} className={`flex items-start space-x-3 p-3 ${activity.color} rounded-lg hover:bg-white transition-colors duration-200 backdrop-blur-sm border border-white/30`}>
+            <div key={index} className={`flex items-start space-x-3 p-3 ${activity.color} rounded-xl hover:bg-white transition-colors duration-200 backdrop-blur-sm border border-white/30`}>
               <div className="bg-white p-2 rounded-lg shadow-xs">
                 {activity.icon}
               </div>
               <div className="flex-1">
-                <h4 className="font-medium text-gray-800">{activity.title}</h4>
-                <p className="text-sm text-gray-600">{activity.description}</p>
+                <h4 className="font-medium text-gray-800 tracking-wide">{activity.title}</h4>
+                <p className="text-sm text-gray-600 font-light">{activity.description}</p>
               </div>
-              <span className="text-xs text-gray-500 whitespace-nowrap">{activity.time}</span>
+              <span className="text-xs text-gray-500 whitespace-nowrap font-light">{activity.time}</span>
             </div>
           ))}
         </div>
@@ -253,9 +243,11 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50/20 via-purple-50/20 to-indigo-50/20 overflow-hidden relative">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50/50 via-blue-50/50 to-cyan-50/50 overflow-hidden relative">
       {/* Particle Animation Background */}
-      
+      <div className="fixed inset-0 z-0 pointer-events-none">
+       
+      </div>
 
       {/* Confetti Animation */}
       {showConfetti && (
@@ -269,47 +261,52 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Animated Background Elements */}
+      {/* Futuristic Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-200/10 blur-3xl animate-float-slow"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-cyan-200/10 blur-3xl animate-float-slow"></div>
         <div className="absolute top-2/3 right-1/3 w-80 h-80 rounded-full bg-indigo-200/10 blur-3xl animate-float-medium"></div>
-        <div className="absolute bottom-20 left-1/3 w-96 h-96 rounded-full bg-purple-200/10 blur-3xl animate-float-slow"></div>
-        <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full bg-blue-300/5 blur-2xl animate-float-fast"></div>
+        <div className="absolute bottom-20 left-1/3 w-96 h-96 rounded-full bg-blue-200/10 blur-3xl animate-float-slow"></div>
+        <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full bg-cyan-300/5 blur-2xl animate-float-fast"></div>
+        
+        {/* Geometric shapes */}
+        <div className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-cyan-400/5 to-blue-500/5 rounded-full blur-xl opacity-70"></div>
+        <div className="absolute bottom-10 right-10 w-60 h-60 bg-gradient-to-br from-indigo-400/5 to-purple-500/5 rounded-full blur-xl opacity-70"></div>
+        <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-gradient-to-br from-blue-400/5 to-cyan-500/5 rounded-full blur-xl opacity-70"></div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full relative z-10">
-        {/* Hero Section with Glass Morphism */}
+        {/* Hero Section - Futuristic Glass Morphism */}
         <div 
           className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30 relative overflow-hidden transform-gpu hover:shadow-3xl transition-all duration-500 group"
           style={{
-            boxShadow: '0 20px 50px -10px rgba(59, 130, 246, 0.2)',
+            boxShadow: '0 25px 60px -15px rgba(6, 182, 212, 0.25)',
             border: '1px solid rgba(255, 255, 255, 0.4)',
             background: 'radial-gradient(circle at top left, rgba(255,255,255,0.98) 0%, rgba(247,250,252,0.98) 100%)'
           }}
         >
           {/* Interactive hover effect */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full -mr-10 -mt-10"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-500/5 rounded-tr-full -ml-10 -mb-10"></div>
+          <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/5 rounded-bl-full -mr-16 -mt-16 rotate-45"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/5 rounded-tr-full -ml-16 -mb-16 -rotate-45"></div>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between relative z-10">
             <div className="animate-fade-in space-y-4">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-                Welcome Back, <br className="sm:hidden" /><span className="text-gradient">User </span>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight tracking-tight">
+                Welcome Back, <br className="sm:hidden" /><span className="text-gradient">User</span>
               </h1>
-              <p className="text-blue-600/80 font-medium flex items-center text-lg">
+              <p className="text-cyan-600/80 font-medium flex items-center text-lg tracking-wide">
                 <Rocket className="w-5 h-5 mr-2 animate-bounce" />
                 Your personalized career dashboard
               </p>
             </div>
             <div className="mt-6 md:mt-0 flex flex-wrap gap-3">
-              <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-100/80 to-indigo-100/80 text-blue-800 shadow-xs border border-white/50 backdrop-blur-sm">
-                <Sparkles className="w-4 h-4 mr-2 text-blue-600" />
+              <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-cyan-100/80 to-blue-100/80 text-cyan-800 shadow-xs border border-white/50 backdrop-blur-sm">
+                <Sparkles className="w-4 h-4 mr-2 text-cyan-600" />
                 Premium Plan
               </span>
               <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-blue-800 border border-blue-100/50 shadow-xs backdrop-blur-sm">
@@ -323,8 +320,7 @@ const Dashboard = () => {
         {/* Search and Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            {/* Enhanced Search Bar */}
-         
+          
 
             {/* Stats Overview with Animated Cards */}
             <DashboardStats />
@@ -334,9 +330,9 @@ const Dashboard = () => {
             {/* Quick Actions */}
             <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/30">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-gray-700">Quick Actions</h3>
-                <div className="w-8 h-8 flex items-center justify-center bg-blue-100/50 rounded-lg">
-                  <Zap className="w-4 h-4 text-blue-600" />
+                <h3 className="font-medium text-gray-700 tracking-wide">Quick Actions</h3>
+                <div className="w-8 h-8 flex items-center justify-center bg-cyan-100/50 rounded-lg">
+                  <Zap className="w-4 h-4 text-cyan-600" />
                 </div>
               </div>
               <QuickActions />
@@ -345,9 +341,9 @@ const Dashboard = () => {
             {/* Recent Activity */}
             <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/30">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-gray-700">Recent Activity</h3>
-                <div className="w-8 h-8 flex items-center justify-center bg-purple-100/50 rounded-lg">
-                  <Clock className="w-4 h-4 text-purple-600" />
+                <h3 className="font-medium text-gray-700 tracking-wide">Recent Activity</h3>
+                <div className="w-8 h-8 flex items-center justify-center bg-indigo-100/50 rounded-lg">
+                  <Clock className="w-4 h-4 text-indigo-600" />
                 </div>
               </div>
               <RecentActivity />
@@ -357,28 +353,22 @@ const Dashboard = () => {
 
         {/* Job Dashboard Section */}
         <div className="relative group transform-gpu hover:-translate-y-1 transition-all duration-500">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/30 to-indigo-100/30 rounded-3xl -z-10 transition-all duration-500 group-hover:opacity-80 blur-xl"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/30 via-blue-100/30 to-indigo-100/30 rounded-3xl -z-10 transition-all duration-500 group-hover:opacity-80 blur-xl"></div>
           <div 
             className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 overflow-hidden transition-all duration-500 hover:shadow-2xl"
             style={{
-              boxShadow: '0 15px 40px -10px rgba(59, 130, 246, 0.15)',
+              boxShadow: '0 20px 50px -15px rgba(6, 182, 212, 0.2)',
               border: '1px solid rgba(255, 255, 255, 0.4)'
             }}
           >
             <div className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-                <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
-                  <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 tracking-tight">
+                  <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     Job Dashboard
                   </span>
                 </h2>
-                <button 
-                  onClick={() => setJobPostingModalOpen(true)}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 transform-gpu"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Post New Job</span>
-                </button>
+                
               </div>
               <JobDashboard />
             </div>
@@ -411,7 +401,7 @@ const Dashboard = () => {
       <style jsx global>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
+          50% { transform: translateY(-10px); }
         }
         @keyframes float-slow {
           0%, 100% { transform: translateY(0) translateX(0); }

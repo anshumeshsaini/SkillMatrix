@@ -111,13 +111,13 @@ const JobDashboard = () => {
 
   const getBadgeStyle = (type: string, value: string) => {
     if (type === 'remote') {
-      return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20';
+      return 'bg-emerald-500/10 text-black-600 border-emerald-500/20 hover:bg-emerald-500/20';
     }
     
     if (type === 'experience') {
       switch (value.toLowerCase()) {
         case 'entry':
-          return 'bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20';
+          return 'bg-sky-500/10 text-black-600 border-sky-500/20 hover:bg-sky-500/20';
         case 'mid':
           return 'bg-purple-500/10 text-purple-600 border-purple-500/20 hover:bg-purple-500/20';
         case 'senior':
@@ -170,28 +170,28 @@ const JobDashboard = () => {
           <div className="flex items-center space-x-2">
             <Button 
               variant={activeFilter === 'all' ? 'default' : 'ghost'} 
-              className={`rounded-full ${activeFilter === 'all' ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+              className={`rounded-full ${activeFilter === 'all' ? 'bg-blue-600 text-black' : 'text-black-600'}`}
               onClick={() => setActiveFilter('all')}
             >
               All Jobs
             </Button>
             <Button 
               variant={activeFilter === 'remote' ? 'default' : 'ghost'} 
-              className={`rounded-full ${activeFilter === 'remote' ? 'bg-emerald-600 text-white' : 'text-gray-600'}`}
+              className={`rounded-full ${activeFilter === 'remote' ? 'bg-emerald-600 text-black' : 'text-gray-600'}`}
               onClick={() => setActiveFilter('remote')}
             >
               Remote
             </Button>
             <Button 
               variant={activeFilter === 'entry' ? 'default' : 'ghost'} 
-              className={`rounded-full ${activeFilter === 'entry' ? 'bg-sky-600 text-white' : 'text-gray-600'}`}
+              className={`rounded-full ${activeFilter === 'entry' ? 'bg-sky-600 text-black' : 'text-gray-600'}`}
               onClick={() => setActiveFilter('entry')}
             >
               Entry Level
             </Button>
             <Button 
               variant={activeFilter === 'senior' ? 'default' : 'ghost'} 
-              className={`rounded-full ${activeFilter === 'senior' ? 'bg-amber-600 text-white' : 'text-gray-600'}`}
+              className={`rounded-full ${activeFilter === 'senior' ? 'bg-amber-600 text-black' : 'text-gray-600'}`}
               onClick={() => setActiveFilter('senior')}
             >
               Senior
@@ -242,7 +242,7 @@ const JobDashboard = () => {
                       </div>
                     </div>
                     <Button variant="ghost" size="icon" className="text-gray-400 hover:text-blue-600">
-                      <Star className="h-5 w-5" />
+
                     </Button>
                   </div>
                 </CardHeader>
@@ -350,9 +350,9 @@ const JobDashboard = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20"></div>
             <div className="relative z-10">
               <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready for your next career move?</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to take the next step in your career? Join us and shape the future together.</h2>
                 <p className="text-lg text-blue-100 mb-8">
-                  Join thousands of professionals who found their dream jobs through our platform.
+                Ready to take the next step in your career? Join thousands of professionals who’ve found their dream jobs through our platform.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <Button 
@@ -362,13 +362,7 @@ const JobDashboard = () => {
                   >
                     Post a Job
                   </Button>
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    className="bg-transparent border-white text-white hover:bg-white/10 font-semibold rounded-full px-8"
-                  >
-                    Browse Companies
-                  </Button>
+                  
                 </div>
               </div>
             </div>
