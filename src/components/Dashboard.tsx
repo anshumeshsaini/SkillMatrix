@@ -361,17 +361,10 @@ const Dashboard = () => {
               border: '1px solid rgba(255, 255, 255, 0.4)'
             }}
           >
-            <div className="p-6 md:p-8">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-                <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 tracking-tight">
-                  <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    Job Dashboard
-                  </span>
-                </h2>
-                
-              </div>
+
+              
               <JobDashboard />
-            </div>
+
           </div>
         </div>
 
