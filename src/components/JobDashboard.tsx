@@ -49,7 +49,6 @@ const JobDashboard = () => {
 
   useEffect(() => {
     fetchJobs();
-    // Load favorites from localStorage
     const savedFavorites = localStorage.getItem('favoriteJobs');
     if (savedFavorites) {
       setFavoriteJobs(JSON.parse(savedFavorites));
@@ -122,25 +121,25 @@ const JobDashboard = () => {
 
   const getBadgeStyle = (type: string, value: string) => {
     if (type === 'remote') {
-      return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20';
+      return 'bg-emerald-100/80 text-emerald-800 border-emerald-200 hover:bg-emerald-200/60';
     }
     
     if (type === 'experience') {
       switch (value.toLowerCase()) {
         case 'entry':
-          return 'bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20';
+          return 'bg-sky-100/80 text-sky-800 border-sky-200 hover:bg-sky-200/60';
         case 'mid':
-          return 'bg-purple-500/10 text-purple-600 border-purple-500/20 hover:bg-purple-500/20';
+          return 'bg-purple-100/80 text-purple-800 border-purple-200 hover:bg-purple-200/60';
         case 'senior':
-          return 'bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20';
+          return 'bg-amber-100/80 text-amber-800 border-amber-200 hover:bg-amber-200/60';
         case 'lead':
-          return 'bg-rose-500/10 text-rose-600 border-rose-500/20 hover:bg-rose-500/20';
+          return 'bg-rose-100/80 text-rose-800 border-rose-200 hover:bg-rose-200/60';
         default:
-          return 'bg-gray-500/10 text-gray-600 border-gray-500/20 hover:bg-gray-500/20';
+          return 'bg-gray-100/80 text-gray-800 border-gray-200 hover:bg-gray-200/60';
       }
     }
     
-    return 'bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20';
+    return 'bg-blue-100/80 text-blue-800 border-blue-200 hover:bg-blue-200/60';
   };
 
   const toggleFavorite = (jobId: string) => {
@@ -166,12 +165,12 @@ const JobDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-[80vh]">
+      <div className="flex items-center justify-center h-[80vh] bg-gradient-to-br from-blue-50 to-cyan-50">
         <div className="flex flex-col items-center space-y-4">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"
+            className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full"
           ></motion.div>
           <motion.p 
             animate={{ opacity: [0.5, 1, 0.5] }}
@@ -186,11 +185,15 @@ const JobDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-25 to-gray-75 p-4 md:p-8">
-     
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 p-4 md:p-8">
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100/30 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-20 right-10 w-64 h-64 bg-cyan-100/30 rounded-full blur-[80px]"></div>
+      </div>
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto pt-24 pb-16">
+      <div className="max-w-7xl mx-auto pt-16 pb-12 relative">
         <div className="text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -198,11 +201,13 @@ const JobDashboard = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
           >
-            <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
-              Discover Your Dream Job
-            </span>
+           <span className="text-blue-600">
+  Discover Your Next Career Adventure
+</span>
+
+
             <br />
-            <span className="text-gray-800">With Top Tech Companies</span>
+            <span className="text-gray-800">With Leading Innovators</span>
           </motion.h1>
           
           <motion.p 
@@ -211,7 +216,7 @@ const JobDashboard = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-gray-600 max-w-3xl mx-auto mb-10"
           >
-            Join thousands of professionals who've found their perfect match through our curated job platform.
+            Find your perfect match among thousands of curated opportunities from top companies worldwide.
           </motion.p>
           
           <motion.div
@@ -220,62 +225,82 @@ const JobDashboard = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="relative max-w-2xl mx-auto"
           >
-            
-           
-            
+            <div className="relative flex items-center">
+              <Search className="absolute left-4 h-5 w-5 text-blue-400" />
+              <input
+                type="text"
+                placeholder="Search for jobs, companies, or skills..."
+                className="w-full pl-12 pr-6 py-4 bg-white/90 backdrop-blur-sm border border-blue-200/70 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300/50 focus:border-blue-300 text-gray-700 placeholder-blue-300/70"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-16 text-blue-300 hover:text-blue-500"
+                >
+                  ✕
+                </button>
+              )}
+             <Button 
+  className="absolute right-1 bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-full px-6 py-2"
+  size="sm"
+>
+  Search
+</Button>
+
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative">
         {/* Filters */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <div className="flex items-center space-x-2">
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button 
-                variant={activeFilter === 'all' ? 'default' : 'ghost'} 
-                className={`rounded-full ${activeFilter === 'all' ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100/50'}`}
-                onClick={() => setActiveFilter('all')}
-              >
-                All Jobs
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button 
-                variant={activeFilter === 'remote' ? 'default' : 'ghost'} 
-                className={`rounded-full ${activeFilter === 'remote' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100/50'}`}
-                onClick={() => setActiveFilter('remote')}
-              >
-                Remote
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button 
-                variant={activeFilter === 'entry' ? 'default' : 'ghost'} 
-                className={`rounded-full ${activeFilter === 'entry' ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100/50'}`}
-                onClick={() => setActiveFilter('entry')}
-              >
-                Entry Level
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button 
-                variant={activeFilter === 'senior' ? 'default' : 'ghost'} 
-                className={`rounded-full ${activeFilter === 'senior' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100/50'}`}
-                onClick={() => setActiveFilter('senior')}
-              >
-                Senior
-              </Button>
-            </motion.div>
-          </div>
-          <div className="text-sm text-gray-500 flex items-center">
-            <BarChart2 className="h-4 w-4 mr-2" />
-            Showing {filteredJobs.length} {filteredJobs.length === 1 ? 'opportunity' : 'opportunities'}
-          </div>
-        </div>
-
-        {/* Featured Jobs Banner */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-white/70 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-blue-100/50">
+  <div className="flex items-center space-x-2">
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <Button 
+        variant={activeFilter === 'all' ? 'default' : 'ghost'} 
+        className={`rounded-full ${activeFilter === 'all' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+        onClick={() => setActiveFilter('all')}
+      >
+        All Jobs
+      </Button>
+    </motion.div>
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <Button 
+        variant={activeFilter === 'remote' ? 'default' : 'ghost'} 
+        className={`rounded-full ${activeFilter === 'remote' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+        onClick={() => setActiveFilter('remote')}
+      >
+        Remote
+      </Button>
+    </motion.div>
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <Button 
+        variant={activeFilter === 'entry' ? 'default' : 'ghost'} 
+        className={`rounded-full ${activeFilter === 'entry' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+        onClick={() => setActiveFilter('entry')}
+      >
+        Entry Level
+      </Button>
+    </motion.div>
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <Button 
+        variant={activeFilter === 'senior' ? 'default' : 'ghost'} 
+        className={`rounded-full ${activeFilter === 'senior' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+        onClick={() => setActiveFilter('senior')}
+      >
+        Senior
+      </Button>
+    </motion.div>
+  </div>
+  <div className="text-sm text-blue-600/80 flex items-center bg-blue-50/50 px-3 py-1.5 rounded-full">
+    <BarChart2 className="h-4 w-4 mr-2 text-blue-500" />
+    Showing {filteredJobs.length} {filteredJobs.length === 1 ? 'opportunity' : 'opportunities'}
+  </div>
+</div>
 
 
         {/* Jobs Grid */}
@@ -297,31 +322,32 @@ const JobDashboard = () => {
                   transition={{ duration: 0.3 }}
                   whileHover={{ y: -5 }}
                 >
-                  <Card className="relative overflow-hidden border border-gray-200/50 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
-                    {/* Premium badge */}
-                    {Math.random() > 0.7 && (
-                      <div className="absolute top-4 right-4 z-10">
-                        <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md flex items-center">
-
-                          Premium
-                        </div>
-                      </div>
-                    )}
-                    
+                  <Card className="relative overflow-hidden border border-blue-100/70 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 group h-full flex flex-col">
                     {/* Favorite button */}
-                   
+                    <button 
+                      onClick={() => toggleFavorite(job.id)}
+                      className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-rose-50/80 transition-colors"
+                    >
+                      <Heart 
+                        className={`h-5 w-5 ${favoriteJobs.includes(job.id) ? 'fill-rose-500 text-rose-500' : 'text-gray-400 hover:text-rose-400'}`}
+                      />
+                    </button>
                     
-                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+                    {/* Premium badge */}
+                 
+                    
+                    {/* Gradient accent */}
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
                     
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center space-x-4">
                           <div className="relative">
-                            <div className="h-14 w-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm">
+                            <div className="h-14 w-14 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl flex items-center justify-center overflow-hidden border border-blue-100 shadow-sm">
                               {job.company.logo_url ? (
                                 <img src={job.company.logo_url} alt={job.company.company_name} className="h-8 w-8 object-contain" />
                               ) : (
-                                <Building className="h-6 w-6 text-blue-600" />
+                                <Building className="h-6 w-6 text-blue-500" />
                               )}
                             </div>
                             {job.remote_allowed && (
@@ -347,7 +373,7 @@ const JobDashboard = () => {
                         <Badge variant="outline" className={getBadgeStyle('experience', job.experience_level)}>
                           {job.experience_level}
                         </Badge>
-                        <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-200">
+                        <Badge variant="outline" className="bg-blue-50/70 text-blue-600 border-blue-100">
                           {job.job_type}
                         </Badge>
                         {job.remote_allowed && (
@@ -378,7 +404,7 @@ const JobDashboard = () => {
                             <Badge 
                               key={index} 
                               variant="outline" 
-                              className="text-xs bg-white border-blue-100 text-blue-600 hover:bg-blue-50"
+                              className="text-xs bg-white/80 border-blue-100 text-blue-600 hover:bg-blue-50/50"
                             >
                               {jobSkill.skill.name}
                             </Badge>
@@ -386,7 +412,7 @@ const JobDashboard = () => {
                           {job.job_skills.length > 4 && (
                             <Badge 
                               variant="outline" 
-                              className="text-xs bg-white border-blue-100 text-blue-600 hover:bg-blue-50"
+                              className="text-xs bg-white/80 border-blue-100 text-blue-600 hover:bg-blue-50/50"
                             >
                               +{job.job_skills.length - 4}
                             </Badge>
@@ -394,8 +420,8 @@ const JobDashboard = () => {
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div className="flex items-center text-xs text-gray-500">
+                      <div className="flex items-center justify-between pt-4 border-t border-blue-100/50">
+                        <div className="flex items-center text-xs text-blue-500/80">
                           <Clock className="h-3.5 w-3.5 mr-1.5" />
                           Posted {new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </div>
@@ -403,17 +429,18 @@ const JobDashboard = () => {
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            className="rounded-full text-gray-500 hover:bg-gray-100"
+                            className="rounded-full text-blue-500 hover:bg-blue-50/50"
                           >
                             <Share2 className="h-4 w-4" />
                           </Button>
                           <Button 
-                            onClick={() => handleApplyClick(job)}
-                            size="sm"
-                            className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-sm shadow-blue-500/30"
-                          >
-                            Apply Now <ArrowRight className="ml-1.5 h-4 w-4" />
-                          </Button>
+  onClick={() => handleApplyClick(job)}
+  size="sm"
+  className="rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-400/30"
+>
+  Apply Now <ArrowRight className="ml-1.5 h-4 w-4" />
+</Button>
+
                         </div>
                       </div>
                     </CardContent>
@@ -427,7 +454,7 @@ const JobDashboard = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <Card className="border-gray-200 bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden">
+              <Card className="border-blue-100/70 bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden">
                 <CardContent className="text-center py-16">
                   <div className="mx-auto max-w-md">
                     <Briefcase className="h-12 w-12 text-blue-400 mx-auto mb-4" />
@@ -439,7 +466,7 @@ const JobDashboard = () => {
                     </p>
                     <Button 
                       variant="outline" 
-                      className="border-blue-200 text-blue-600 hover:bg-blue-50 rounded-full"
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50/50 rounded-full"
                       onClick={() => {
                         setSearchQuery('');
                         setActiveFilter('all');
@@ -463,9 +490,9 @@ const JobDashboard = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-8 md:p-12 text-white overflow-hidden relative"
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl p-8 md:p-12 text-white overflow-hidden relative"
           >
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-400/20 to-cyan-400/20"></div>
             <div className="relative z-10">
               <div className="max-w-2xl mx-auto text-center">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to take the next step in your career?</h2>
@@ -494,22 +521,20 @@ const JobDashboard = () => {
         </div>
       )}
 
-      {/* Footer */}
-    
+<JobApplicationModal
+  isOpen={applicationModalOpen}
+  onClose={() => setApplicationModalOpen(false)}
+  job={selectedJob}
+  onApplicationSubmitted={fetchJobs}
+/>
 
-      <JobApplicationModal
-        isOpen={applicationModalOpen}
-        onClose={() => setApplicationModalOpen(false)}
-        job={selectedJob}
-        onApplicationSubmitted={fetchJobs}
-      />
-
-      {jobPostingModalOpen && (
-        <JobPostingModal
-          onClose={() => setJobPostingModalOpen(false)}
-          onJobPosted={handleJobPosted}
-        />
-      )}
+{jobPostingModalOpen && (
+  <JobPostingModal
+    isOpen={jobPostingModalOpen}
+    onClose={() => setJobPostingModalOpen(false)}
+    onJobPosted={handleJobPosted}
+  />
+)}
     </div>
   );
 };

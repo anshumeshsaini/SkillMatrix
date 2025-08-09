@@ -7,14 +7,14 @@ const CourseCardWrapper = styled.div`
     width: 320px;
     height: 480px;
     border-radius: 24px;
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     z-index: 1;
   }
 
@@ -22,7 +22,7 @@ const CourseCardWrapper = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+    background: linear-gradient(135deg, rgba(173, 216, 230, 0.1) 0%, rgba(224, 255, 255, 0.05) 100%);
     border-radius: 24px;
     z-index: -1;
     opacity: 0;
@@ -30,9 +30,9 @@ const CourseCardWrapper = styled.div`
   }
 
   .card_box:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-    border-color: rgba(255,255,255,0.6);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 105, 180, 0.15);
+    border-color: rgba(173, 216, 230, 0.7);
   }
 
   .card_box:hover::before {
@@ -57,7 +57,7 @@ const CourseCardWrapper = styled.div`
     position: absolute;
     width: 200%;
     height: 48px;
-    background: linear-gradient(45deg, #FF512F 0%, #F09819 51%, #FF512F 100%);
+    background: linear-gradient(45deg, #0077cc 0%, #00aaff 51%, #0077cc 100%);
     transform: rotate(-45deg) translateY(-25px);
     display: flex;
     align-items: center;
@@ -66,9 +66,9 @@ const CourseCardWrapper = styled.div`
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 119, 204, 0.3);
     font-size: 14px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .premium_span::after {
@@ -79,8 +79,8 @@ const CourseCardWrapper = styled.div`
     left: 0;
     height: 12px;
     z-index: -1;
-    box-shadow: 160px -160px #cc3f47;
-    background: linear-gradient(45deg, #FF512F 0%, #F09819 51%, #FF512F 100%);
+    box-shadow: 160px -160px #0066b3;
+    background: linear-gradient(45deg, #0077cc 0%, #00aaff 51%, #0077cc 100%);
   }
 
   .glow-effect {
@@ -89,7 +89,7 @@ const CourseCardWrapper = styled.div`
     height: 100%;
     top: 0;
     left: 0;
-    background: radial-gradient(circle at center, rgba(255,215,0,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -151,28 +151,28 @@ const PlacementGuaranteeCourses: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-8xl mx-auto px-8 py-16 font-sans overflow-hidden relative">
+    <div className="max-w-8xl mx-auto px-8 py-16 font-sans overflow-hidden relative  ">
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-blue-100/20 to-purple-100/20 blur-3xl animate-float-slow"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-[32rem] h-[32rem] rounded-full bg-gradient-to-r from-indigo-100/20 to-pink-100/20 blur-3xl animate-float-medium"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-blue-100/30 to-cyan-100/30 blur-3xl animate-float-slow"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-[32rem] h-[32rem] rounded-full bg-gradient-to-r from-blue-100/20 to-cyan-100/20 blur-3xl animate-float-medium"></div>
       </div>
 
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 px-4 py-2 rounded-full mb-4 border border-white/20 backdrop-blur-sm">
-              <Zap className="text-yellow-400" size={20} />
-              <span className="text-sm font-medium text-blue-800">PREMIUM PROGRAMS</span>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/10 to-cyan-500/10 px-4 py-2 rounded-full mb-4 border border-blue-200/30 backdrop-blur-sm">
+              <Zap className="text-blue-500" size={20} />
+              <span className="text-sm font-medium text-blue-700">PREMIUM PROGRAMS</span>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Elite <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Career Accelerators</span>
+              Elite <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Career Accelerators</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl">
               Transform your career with our industry-leading, placement-guaranteed programs
             </p>
           </div>
-          <button className="mt-6 md:mt-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl hover:from-blue-600/90 hover:to-purple-600/90 transition-all duration-300">
+          <button className="mt-6 md:mt-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg hover:shadow-xl hover:from-blue-600/90 hover:to-cyan-500/90 transition-all duration-300">
             <span>View All Programs</span>
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -191,7 +191,7 @@ const PlacementGuaranteeCourses: React.FC = () => {
                 )}
                 
                 {/* Image container */}
-                <div className="w-full h-56 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
+                <div className="w-full h-56 bg-gradient-to-br from-blue-50 to-cyan-50 overflow-hidden relative">
                   {course.image && (
                     <img 
                       src={course.image} 
@@ -206,7 +206,7 @@ const PlacementGuaranteeCourses: React.FC = () => {
                 {/* Content container */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${course.isPremium ? 'bg-yellow-100/80 text-yellow-800' : 'bg-blue-100/80 text-blue-800'}`}>
+                    <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${course.isPremium ? 'bg-blue-100/80 text-blue-800' : 'bg-cyan-100/80 text-cyan-800'}`}>
                       {course.tag}
                     </span>
                   </div>
@@ -215,30 +215,30 @@ const PlacementGuaranteeCourses: React.FC = () => {
                   
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gray-500" />
+                      <Clock className="w-4 h-4 text-blue-500" />
                       <span className="text-sm text-gray-600">{course.duration}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-gray-500" />
+                      <DollarSign className="w-4 h-4 text-blue-500" />
                       <span className="text-sm font-medium text-gray-800">{course.salary}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-gray-500" />
+                      <Users className="w-4 h-4 text-blue-500" />
                       <span className="text-sm text-gray-600">{course.opportunities}</span>
                     </div>
                   </div>
                   
-                  <div className="mt-5 pt-4 border-t border-gray-100">
+                  <div className="mt-5 pt-4 border-t border-blue-100/50">
                     <div className="flex flex-wrap gap-2 mb-4">
                       {course.highlights.map((highlight, i) => (
-                        <span key={i} className="text-xs font-medium px-2 py-1 bg-gray-100/60 rounded-full text-gray-700">
+                        <span key={i} className="text-xs font-medium px-2 py-1 bg-blue-50/60 rounded-full text-blue-700">
                           {highlight}
                         </span>
                       ))}
                     </div>
                     <button className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${course.isPremium ? 
-                      'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:shadow-lg hover:shadow-yellow-400/30' : 
-                      'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:shadow-blue-400/30'}`}>
+                      'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:shadow-lg hover:shadow-blue-400/30' : 
+                      'bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:shadow-lg hover:shadow-cyan-400/30'}`}>
                       <span>Explore Program</span>
                       {course.isPremium && <Sparkles className="w-4 h-4" />}
                     </button>
