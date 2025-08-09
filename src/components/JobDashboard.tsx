@@ -46,6 +46,7 @@ const JobDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [favoriteJobs, setFavoriteJobs] = useState<string[]>([]);
+  const [showShareDialog, setShowShareDialog] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -150,6 +151,38 @@ const JobDashboard = () => {
     }
   };
 
+  const handleShareClick = async (job: Job) => {
+    try {
+      const shareData = {
+        title: `${job.title} at ${job.company.company_name}`,
+        text: `Check out this ${job.title} position at ${job.company.company_name}. ${job.description.substring(0, 100)}...`,
+        url: `${window.location.origin}/jobs/${job.id}`, // Assuming you have job detail routes
+      };
+
+      if (navigator.share) {
+        // Web Share API is available (mobile devices)
+        await navigator.share(shareData);
+      } else {
+        // Fallback for desktop browsers
+        await navigator.clipboard.writeText(`${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`);
+        toast({
+          title: "Link copied!",
+          description: "Job link has been copied to your clipboard.",
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      // Don't show an error if the user canceled the share
+      if (error instanceof Error && error.name !== 'AbortError') {
+        toast({
+          title: "Error",
+          description: "Couldn't share the job.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          job.company.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -201,11 +234,7 @@ const JobDashboard = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
           >
-           <span className="text-blue-600">
-  Discover Your Next Career Adventure
-</span>
-
-
+            <span className="text-blue-600">Discover Your Next Career Adventure</span>
             <br />
             <span className="text-gray-800">With Leading Innovators</span>
           </motion.h1>
@@ -242,13 +271,12 @@ const JobDashboard = () => {
                   ✕
                 </button>
               )}
-             <Button 
-  className="absolute right-1 bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-full px-6 py-2"
-  size="sm"
->
-  Search
-</Button>
-
+              <Button 
+                className="absolute right-1 bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-full px-6 py-2"
+                size="sm"
+              >
+                Search
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -258,50 +286,49 @@ const JobDashboard = () => {
       <div className="max-w-7xl mx-auto relative">
         {/* Filters */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-white/70 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-blue-100/50">
-  <div className="flex items-center space-x-2">
-    <motion.div whileHover={{ scale: 1.05 }}>
-      <Button 
-        variant={activeFilter === 'all' ? 'default' : 'ghost'} 
-        className={`rounded-full ${activeFilter === 'all' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
-        onClick={() => setActiveFilter('all')}
-      >
-        All Jobs
-      </Button>
-    </motion.div>
-    <motion.div whileHover={{ scale: 1.05 }}>
-      <Button 
-        variant={activeFilter === 'remote' ? 'default' : 'ghost'} 
-        className={`rounded-full ${activeFilter === 'remote' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
-        onClick={() => setActiveFilter('remote')}
-      >
-        Remote
-      </Button>
-    </motion.div>
-    <motion.div whileHover={{ scale: 1.05 }}>
-      <Button 
-        variant={activeFilter === 'entry' ? 'default' : 'ghost'} 
-        className={`rounded-full ${activeFilter === 'entry' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
-        onClick={() => setActiveFilter('entry')}
-      >
-        Entry Level
-      </Button>
-    </motion.div>
-    <motion.div whileHover={{ scale: 1.05 }}>
-      <Button 
-        variant={activeFilter === 'senior' ? 'default' : 'ghost'} 
-        className={`rounded-full ${activeFilter === 'senior' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
-        onClick={() => setActiveFilter('senior')}
-      >
-        Senior
-      </Button>
-    </motion.div>
-  </div>
-  <div className="text-sm text-blue-600/80 flex items-center bg-blue-50/50 px-3 py-1.5 rounded-full">
-    <BarChart2 className="h-4 w-4 mr-2 text-blue-500" />
-    Showing {filteredJobs.length} {filteredJobs.length === 1 ? 'opportunity' : 'opportunities'}
-  </div>
-</div>
-
+          <div className="flex items-center space-x-2">
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button 
+                variant={activeFilter === 'all' ? 'default' : 'ghost'} 
+                className={`rounded-full ${activeFilter === 'all' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+                onClick={() => setActiveFilter('all')}
+              >
+                All Jobs
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button 
+                variant={activeFilter === 'remote' ? 'default' : 'ghost'} 
+                className={`rounded-full ${activeFilter === 'remote' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+                onClick={() => setActiveFilter('remote')}
+              >
+                Remote
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button 
+                variant={activeFilter === 'entry' ? 'default' : 'ghost'} 
+                className={`rounded-full ${activeFilter === 'entry' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+                onClick={() => setActiveFilter('entry')}
+              >
+                Entry Level
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button 
+                variant={activeFilter === 'senior' ? 'default' : 'ghost'} 
+                className={`rounded-full ${activeFilter === 'senior' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200/50' : 'text-gray-600 hover:bg-blue-50/50'}`}
+                onClick={() => setActiveFilter('senior')}
+              >
+                Senior
+              </Button>
+            </motion.div>
+          </div>
+          <div className="text-sm text-blue-600/80 flex items-center bg-blue-50/50 px-3 py-1.5 rounded-full">
+            <BarChart2 className="h-4 w-4 mr-2 text-blue-500" />
+            Showing {filteredJobs.length} {filteredJobs.length === 1 ? 'opportunity' : 'opportunities'}
+          </div>
+        </div>
 
         {/* Jobs Grid */}
         <AnimatePresence>
@@ -332,9 +359,6 @@ const JobDashboard = () => {
                         className={`h-5 w-5 ${favoriteJobs.includes(job.id) ? 'fill-rose-500 text-rose-500' : 'text-gray-400 hover:text-rose-400'}`}
                       />
                     </button>
-                    
-                    {/* Premium badge */}
-                 
                     
                     {/* Gradient accent */}
                     <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
@@ -430,17 +454,17 @@ const JobDashboard = () => {
                             variant="ghost" 
                             size="sm" 
                             className="rounded-full text-blue-500 hover:bg-blue-50/50"
+                            onClick={() => handleShareClick(job)}
                           >
                             <Share2 className="h-4 w-4" />
                           </Button>
                           <Button 
-  onClick={() => handleApplyClick(job)}
-  size="sm"
-  className="rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-400/30"
->
-  Apply Now <ArrowRight className="ml-1.5 h-4 w-4" />
-</Button>
-
+                            onClick={() => handleApplyClick(job)}
+                            size="sm"
+                            className="rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-400/30"
+                          >
+                            Apply Now <ArrowRight className="ml-1.5 h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -521,20 +545,20 @@ const JobDashboard = () => {
         </div>
       )}
 
-<JobApplicationModal
-  isOpen={applicationModalOpen}
-  onClose={() => setApplicationModalOpen(false)}
-  job={selectedJob}
-  onApplicationSubmitted={fetchJobs}
-/>
+      <JobApplicationModal
+        isOpen={applicationModalOpen}
+        onClose={() => setApplicationModalOpen(false)}
+        job={selectedJob}
+        onApplicationSubmitted={fetchJobs}
+      />
 
-{jobPostingModalOpen && (
-  <JobPostingModal
-    isOpen={jobPostingModalOpen}
-    onClose={() => setJobPostingModalOpen(false)}
-    onJobPosted={handleJobPosted}
-  />
-)}
+      {jobPostingModalOpen && (
+        <JobPostingModal
+          isOpen={jobPostingModalOpen}
+          onClose={() => setJobPostingModalOpen(false)}
+          onJobPosted={handleJobPosted}
+        />
+      )}
     </div>
   );
 };
