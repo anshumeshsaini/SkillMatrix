@@ -22,8 +22,7 @@ const Navigation = () => {
       label: 'Dashboard', 
       accent: 'from-blue-500 to-cyan-500',
       subItems: [
-        { path: '/analytics', label: 'Analytics' },
-        { path: '/projects', label: 'Projects' }
+        
       ]
     },
     { 
@@ -131,27 +130,7 @@ const Navigation = () => {
                 </div>
 
                 {/* Submenu Dropdown */}
-                {subMenuOpen === link.path && link.subItems && (
-                  <div className="absolute top-full left-0 w-56 pt-2">
-                    <div className="bg-white/95 backdrop-blur-lg rounded-xl shadow-xl shadow-blue-200/20 border border-blue-100/50 overflow-hidden">
-                      <div className="py-1">
-                        {link.subItems.map((subItem) => (
-                          <Link
-                            key={subItem.path}
-                            to={subItem.path}
-                            className="block px-4 py-3 text-sm text-blue-800/80 hover:bg-blue-50/50 hover:text-blue-900 transition-colors duration-200 flex items-center"
-                          >
-                            <span className={`h-1.5 w-1.5 rounded-full mr-3 ${isActive(subItem.path) ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-blue-200'}`}></span>
-                            {subItem.label}
-                            {isActive(subItem.path) && (
-                              <Sparkles className="h-3 w-3 ml-auto text-cyan-500" />
-                            )}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+              
               </div>
             ))}
             
