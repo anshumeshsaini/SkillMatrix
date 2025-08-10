@@ -67,9 +67,6 @@
     --ring: 59 130 246;
   }
 }
-body {
-  font-family: 'YourFontName', sans-serif;
-}
 
 @layer base {
   * {
