@@ -1,6 +1,12 @@
 
 import type { Config } from "tailwindcss";
-
+module.exports = {
+	theme: {
+	  fontFamily: {
+		sans: ['Inter', 'sans-serif'],
+	  },
+	},
+  }
 export default {
 	darkMode: ["class"],
 	content: [
