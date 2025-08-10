@@ -7,177 +7,185 @@ import { Settings, Bell, Lock, User, Mail, Eye, EyeOff, Download, Trash2 } from 
 
 const SettingsPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-900 dark:via-blue-900/20 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50">
       <Navigation />
       
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {/* Hero Header */}
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300">
-            <Settings className="w-8 h-8" />
+        <div className="mb-16 text-center">
+          <div className="relative inline-flex mb-6">
+            <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-xl animate-pulse"></div>
+            <div className="relative flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-lg">
+              <Settings className="w-8 h-8" strokeWidth={2} />
+            </div>
           </div>
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3 bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-            Account Settings
+          <h1 className="text-5xl font-bold text-black mb-4 tracking-tight">
+            Account <span className="text-blue-600">Settings</span>
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Customize your experience and manage your personal preferences
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+            Customize your experience with our elegant settings panel
           </p>
         </div>
 
         {/* Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
-          <div className="lg:col-span-1 space-y-4">
-            <Card className="sticky top-24 border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
-              <CardContent className="p-6">
-                <nav className="space-y-2">
-                  <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium">
-                    <Bell className="w-5 h-5" />
-                    <span>Notifications</span>
-                  </button>
-                  <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 font-medium">
-                    <Lock className="w-5 h-5" />
-                    <span>Privacy</span>
-                  </button>
-                  <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 font-medium">
-                    <User className="w-5 h-5" />
-                    <span>Account</span>
-                  </button>
-                </nav>
-              </CardContent>
-            </Card>
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-4">
+              <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-lg rounded-2xl overflow-hidden">
+                <CardContent className="p-2">
+                  <nav className="space-y-1">
+                    <button className="w-full flex items-center space-x-4 px-6 py-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-400/10 text-blue-600 font-medium transition-all hover:shadow-md">
+                      <Bell className="w-5 h-5 flex-shrink-0" strokeWidth={2} />
+                      <span>Notifications</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-4 px-6 py-4 rounded-xl text-gray-700 font-medium transition-all hover:bg-gray-100/50 hover:shadow-sm">
+                      <Lock className="w-5 h-5 flex-shrink-0" strokeWidth={2} />
+                      <span>Privacy</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-4 px-6 py-4 rounded-xl text-gray-700 font-medium transition-all hover:bg-gray-100/50 hover:shadow-sm">
+                      <User className="w-5 h-5 flex-shrink-0" strokeWidth={2} />
+                      <span>Account</span>
+                    </button>
+                  </nav>
+                </CardContent>
+              </Card>
+              
+              {/* Profile Card */}
+             
+            </div>
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-8">
             {/* Notifications Card */}
-            <Card className="border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden">
-              <CardHeader className="border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300">
-                    <Bell className="w-5 h-5" />
+            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-lg rounded-2xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-blue-500/5 to-cyan-400/5 border-b border-gray-200/50">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-md">
+                    <Bell className="w-6 h-6" strokeWidth={2} />
                   </div>
                   <div>
-                    <CardTitle className="text-slate-900 dark:text-white">Notifications</CardTitle>
-                    <CardDescription>Choose what notifications you want to receive</CardDescription>
+                    <CardTitle className="text-2xl font-bold text-black">Notifications</CardTitle>
+                    <CardDescription className="text-gray-600">Choose what notifications you want to receive</CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="divide-y divide-slate-200 dark:divide-slate-700">
-                <div className="py-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-lg bg-blue-100/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300">
-                      <Mail className="w-5 h-5" />
+              <CardContent className="divide-y divide-gray-200/50">
+                <div className="py-6 flex items-center justify-between">
+                  <div className="flex items-center space-x-5">
+                    <div className="p-3 rounded-xl bg-blue-100/50 text-blue-600">
+                      <Mail className="w-5 h-5" strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="font-medium">New job matches</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-semibold text-black">New job matches</p>
+                      <p className="text-sm text-gray-600">
                         Get notified when new jobs match your skills
                       </p>
                     </div>
                   </div>
-                  <Switch className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-slate-300" />
+                  <Switch className="data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-gray-300" />
                 </div>
-                <div className="py-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-lg bg-indigo-100/50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-300">
-                      <User className="w-5 h-5" />
+                <div className="py-6 flex items-center justify-between">
+                  <div className="flex items-center space-x-5">
+                    <div className="p-3 rounded-xl bg-cyan-100/50 text-cyan-600">
+                      <User className="w-5 h-5" strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="font-medium">Application updates</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-semibold text-black">Application updates</p>
+                      <p className="text-sm text-gray-600">
                         Get notified about application status changes
                       </p>
                     </div>
                   </div>
-                  <Switch className="data-[state=checked]:bg-indigo-600 data-[state=unchecked]:bg-slate-300" />
+                  <Switch className="data-[state=checked]:bg-cyan-500 data-[state=unchecked]:bg-gray-300" />
                 </div>
-                <div className="py-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-lg bg-purple-100/50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-300">
-                      <Mail className="w-5 h-5" />
+                <div className="py-6 flex items-center justify-between">
+                  <div className="flex items-center space-x-5">
+                    <div className="p-3 rounded-xl bg-blue-100/50 text-blue-600">
+                      <Mail className="w-5 h-5" strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="font-medium">Messages</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-semibold text-black">Messages</p>
+                      <p className="text-sm text-gray-600">
                         Get notified about new messages
                       </p>
                     </div>
                   </div>
-                  <Switch className="data-[state=checked]:bg-purple-600 data-[state=unchecked]:bg-slate-300" />
+                  <Switch className="data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-gray-300" />
                 </div>
               </CardContent>
             </Card>
 
             {/* Privacy Card */}
-            <Card className="border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden">
-              <CardHeader className="border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300">
-                    <Lock className="w-5 h-5" />
+            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-lg rounded-2xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-blue-500/5 to-cyan-400/5 border-b border-gray-200/50">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-md">
+                    <Lock className="w-6 h-6" strokeWidth={2} />
                   </div>
                   <div>
-                    <CardTitle className="text-slate-900 dark:text-white">Privacy</CardTitle>
-                    <CardDescription>Control your privacy and visibility settings</CardDescription>
+                    <CardTitle className="text-2xl font-bold text-black">Privacy</CardTitle>
+                    <CardDescription className="text-gray-600">Control your privacy and visibility settings</CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="divide-y divide-slate-200 dark:divide-slate-700">
-                <div className="py-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-lg bg-emerald-100/50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-300">
-                      <Eye className="w-5 h-5" />
+              <CardContent className="divide-y divide-gray-200/50">
+                <div className="py-6 flex items-center justify-between">
+                  <div className="flex items-center space-x-5">
+                    <div className="p-3 rounded-xl bg-emerald-100/50 text-emerald-600">
+                      <Eye className="w-5 h-5" strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="font-medium">Profile visibility</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-semibold text-black">Profile visibility</p>
+                      <p className="text-sm text-gray-600">
                         Make your profile visible to recruiters
                       </p>
                     </div>
                   </div>
-                  <Switch defaultChecked className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-slate-300" />
+                  <Switch defaultChecked className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-gray-300" />
                 </div>
-                <div className="py-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-lg bg-amber-100/50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-300">
-                      <EyeOff className="w-5 h-5" />
+                <div className="py-6 flex items-center justify-between">
+                  <div className="flex items-center space-x-5">
+                    <div className="p-3 rounded-xl bg-amber-100/50 text-amber-600">
+                      <EyeOff className="w-5 h-5" strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="font-medium">Show online status</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-semibold text-black">Show online status</p>
+                      <p className="text-sm text-gray-600">
                         Let others see when you're online
                       </p>
                     </div>
                   </div>
-                  <Switch className="data-[state=checked]:bg-amber-600 data-[state=unchecked]:bg-slate-300" />
+                  <Switch className="data-[state=checked]:bg-amber-500 data-[state=unchecked]:bg-gray-300" />
                 </div>
               </CardContent>
             </Card>
 
             {/* Account Card */}
-            <Card className="border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden">
-              <CardHeader className="border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300">
-                    <User className="w-5 h-5" />
+            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-lg rounded-2xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-blue-500/5 to-cyan-400/5 border-b border-gray-200/50">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-md">
+                    <User className="w-6 h-6" strokeWidth={2} />
                   </div>
                   <div>
-                    <CardTitle className="text-slate-900 dark:text-white">Account</CardTitle>
-                    <CardDescription>Manage your account settings</CardDescription>
+                    <CardTitle className="text-2xl font-bold text-black">Account</CardTitle>
+                    <CardDescription className="text-gray-600">Manage your account settings</CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4 py-6">
-                <Button variant="outline" className="w-full justify-start space-x-3 py-6">
-                  <Lock className="w-5 h-5" />
-                  <span>Change Password</span>
+                <Button variant="outline" className="w-full justify-start space-x-4 py-5 rounded-xl border-gray-300 hover:bg-gray-100/50 hover:shadow-sm">
+                  <Lock className="w-5 h-5 text-blue-600" strokeWidth={2} />
+                  <span className="text-gray-700">Change Password</span>
                 </Button>
-                <Button variant="outline" className="w-full justify-start space-x-3 py-6">
-                  <Download className="w-5 h-5" />
-                  <span>Download Data</span>
+                <Button variant="outline" className="w-full justify-start space-x-4 py-5 rounded-xl border-gray-300 hover:bg-gray-100/50 hover:shadow-sm">
+                  <Download className="w-5 h-5 text-cyan-600" strokeWidth={2} />
+                  <span className="text-gray-700">Download Data</span>
                 </Button>
-                <Button variant="destructive" className="w-full justify-start space-x-3 py-6 hover:bg-red-700/90">
-                  <Trash2 className="w-5 h-5" />
+                <Button variant="destructive" className="w-full justify-start space-x-4 py-5 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-md hover:shadow-lg">
+                  <Trash2 className="w-5 h-5" strokeWidth={2} />
                   <span>Delete Account</span>
                 </Button>
               </CardContent>
@@ -185,6 +193,13 @@ const SettingsPage = () => {
           </div>
         </div>
       </main>
+      
+      {/* Floating Action Button */}
+      <div className="fixed bottom-8 right-8">
+        <Button className="rounded-full w-14 h-14 shadow-xl bg-gradient-to-br from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500">
+          <Settings className="w-6 h-6" strokeWidth={2} />
+        </Button>
+      </div>
     </div>
   );
 };

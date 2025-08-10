@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Zap, Check, Shield, BadgeCheck, ArrowRight, Home, User, Settings, Mail, Phone } from 'lucide-react';
+import { Zap, Check, Shield, BadgeCheck, ArrowRight, Home, User, Settings, Mail, Phone, Star, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
 import Footer from './Footer';
-
 
 const Billing: React.FC = () => {
   const [activePlan, setActivePlan] = useState<'monthly' | 'annual'>('monthly');
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const plans = {
     monthly: [
@@ -79,86 +79,111 @@ const Billing: React.FC = () => {
     window.open(`https://wa.me/917379340224?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const toggleFaq = (index: number) => {
+    setExpandedFaq(expandedFaq === index ? null : index);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-cyan-50">
+      <Navigation />
 
-      {/* Navigation */}
-     <Navigation/>
-
-      {/* Main Content */}
-      <main className="flex-grow bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
+          {/* Elegant Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-              Simple, transparent pricing
+            <div className="inline-flex items-center justify-center mb-4 bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 shadow-sm">
+              <Zap className="h-5 w-5 text-blue-600 mr-2" />
+              <span className="text-blue-600 font-medium">PRICING PLANS</span>
+            </div>
+            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl mb-4">
+              Simple, <span className="text-blue-600">Transparent</span> Pricing
             </h1>
-            <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-              Choose the plan that's right for you. Switch or cancel anytime.
+            <p className="mt-5 max-w-xl mx-auto text-xl text-gray-700">
+              Choose the perfect plan for your needs. Switch or cancel anytime.
             </p>
             
-            {/* Toggle */}
+            {/* Premium Toggle */}
             <div className="mt-8 flex items-center justify-center">
-              <span className={`mr-4 text-sm font-medium ${activePlan === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Monthly
-              </span>
-              <button
-                type="button"
-                className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                onClick={() => setActivePlan(prev => prev === 'monthly' ? 'annual' : 'monthly')}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    activePlan === 'annual' ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-              <span className={`ml-4 text-sm font-medium ${activePlan === 'annual' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Annual <span className="text-blue-600">(Save 17%)</span>
-              </span>
+              <div className="bg-white/80 backdrop-blur-sm p-1 rounded-xl shadow-inner">
+                <div className="flex items-center">
+                  <button
+                    onClick={() => setActivePlan('monthly')}
+                    className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activePlan === 'monthly' 
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => setActivePlan('annual')}
+                    className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activePlan === 'annual' 
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Annual <span className="text-blue-500">(Save 17%)</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Pricing Plans */}
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-6">
+          {/* Floating Pricing Cards */}
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-6 relative">
+            {/* Decorative elements */}
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-200/30 rounded-full filter blur-3xl opacity-50"></div>
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-cyan-200/30 rounded-full filter blur-3xl opacity-50"></div>
+            
             {plans[activePlan].map((plan, index) => (
               <div 
                 key={`${activePlan}-${index}`} 
-                className={`relative rounded-2xl border ${
+                className={`relative rounded-2xl transition-all duration-300 hover:transform hover:-translate-y-2 ${
                   plan.recommended 
-                    ? 'border-blue-500 bg-white shadow-xl ring-1 ring-blue-500' 
-                    : 'border-gray-200 bg-white'
+                    ? 'border-0 bg-white shadow-2xl ring-2 ring-blue-500/20' 
+                    : 'border border-gray-200/80 bg-white/90 backdrop-blur-sm'
                 }`}
               >
                 {plan.recommended && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <div className="flex items-center justify-center px-4 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">
-                      <Zap className="w-3 h-3 mr-1" />
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="flex items-center justify-center px-6 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold rounded-full shadow-lg">
+                      <Star className="w-4 h-4 mr-1.5 fill-current" />
                       Most Popular
                     </div>
                   </div>
                 )}
                 
                 <div className="p-8">
-                  <h2 className="text-lg font-medium text-gray-900">
-                    {plan.name}
-                    {plan.recommended && <span className="ml-2 text-blue-500">★</span>}
-                  </h2>
-                  <p className="mt-4 flex items-baseline text-gray-900">
-                    <span className="text-5xl font-extrabold tracking-tight">{plan.price}</span>
-                    <span className="ml-1 text-xl font-semibold">/{plan.period}</span>
-                  </p>
-                  {plan.savings && (
-                    <p className="mt-2 text-sm text-blue-600">{plan.savings}</p>
-                  )}
-                  <p className="mt-2 font-medium text-blue-600">{plan.deals}</p>
-                  <p className="mt-2 text-gray-500">Perfect for {plan.name.toLowerCase()} users</p>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {plan.name}
+                    </h2>
+                    {plan.recommended && (
+                      <span className="text-blue-500 text-xl">★</span>
+                    )}
+                  </div>
+                  
+                  <div className="mt-6">
+                    <p className="flex items-baseline text-gray-900">
+                      <span className="text-5xl font-extrabold tracking-tight">{plan.price}</span>
+                      <span className="ml-2 text-xl font-semibold text-gray-500">/{plan.period}</span>
+                    </p>
+                    {plan.savings && (
+                      <p className="mt-1 text-sm font-medium text-blue-600">{plan.savings}</p>
+                    )}
+                  </div>
+                  
+                  <p className="mt-4 font-medium text-blue-600">{plan.deals}</p>
+                  <p className="mt-1 text-gray-500">Perfect for {plan.name.toLowerCase()} users</p>
 
                   <ul className="mt-8 space-y-3">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <Check className="h-5 w-5 flex-shrink-0 text-green-500" />
+                        <div className="flex-shrink-0 bg-blue-100/50 p-1 rounded-full">
+                          <Check className="h-5 w-5 text-blue-600" />
+                        </div>
                         <span className="ml-3 text-base text-gray-700">{feature}</span>
                       </li>
                     ))}
@@ -166,24 +191,28 @@ const Billing: React.FC = () => {
 
                   <button
                     onClick={() => handlePurchase(plan.id)}
-                    className={`mt-8 w-full flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium text-white ${
+                    className={`mt-8 w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl text-base font-medium transition-all ${
                       plan.recommended 
-                        ? 'bg-blue-600 hover:bg-blue-700' 
-                        : 'bg-gray-800 hover:bg-gray-900'
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg hover:from-blue-700 hover:to-cyan-700' 
+                        : 'bg-gray-900 text-white shadow-md hover:bg-gray-800'
                     }`}
                   >
                     Get started
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* FAQ Section */}
-          <div className="mt-24 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-extrabold text-center text-gray-900">Frequently asked questions</h2>
+          {/* Elegant FAQ Section */}
+          <div className="mt-24 max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
+              <p className="mt-3 text-lg text-gray-600">Find answers to common questions about our plans</p>
+            </div>
             
-            <dl className="mt-12 space-y-10">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden">
               {[
                 {
                   question: "How many deals will be shared?",
@@ -200,23 +229,66 @@ const Billing: React.FC = () => {
                 {
                   question: "When will my deals be shared?",
                   answer: "Deals are shared immediately after purchase confirmation."
+                },
+                {
+                  question: "What payment methods do you accept?",
+                  answer: "We accept payments via WhatsApp payment links, UPI, and bank transfers."
                 }
               ].map((faq, index) => (
-                <div key={index} className="pt-6">
-                  <dt className="text-lg font-medium text-gray-900">
-                    {faq.question}
-                  </dt>
-                  <dd className="mt-2 text-base text-gray-500">
+                <div 
+                  key={index} 
+                  className={`border-b border-gray-200/50 last:border-0 transition-all ${expandedFaq === index ? 'bg-blue-50/30' : ''}`}
+                >
+                  <button
+                    onClick={() => toggleFaq(index)}
+                    className="w-full flex justify-between items-center p-6 text-left"
+                  >
+                    <h3 className="text-lg font-medium text-gray-900">{faq.question}</h3>
+                    <ChevronDown 
+                      className={`h-5 w-5 text-gray-500 transition-transform ${expandedFaq === index ? 'transform rotate-180' : ''}`}
+                    />
+                  </button>
+                  <div 
+                    className={`px-6 pb-6 pt-0 text-gray-700 transition-all overflow-hidden ${
+                      expandedFaq === index ? 'block' : 'hidden'
+                    }`}
+                  >
                     {faq.answer}
-                  </dd>
+                  </div>
                 </div>
               ))}
-            </dl>
+            </div>
+
+            {/* CTA Section */}
+            <div className="mt-16 text-center">
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 shadow-xl">
+                <h3 className="text-2xl font-bold text-white mb-3">Still have questions?</h3>
+                <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+                  Our support team is available 24/7 to help you choose the right plan.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <a
+                    href="https://wa.me/917379340224"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-blue-600 bg-white hover:bg-blue-50"
+                  >
+
+                    Chat with Support
+                  </a>
+                  <a
+                    href="mailto:anshumesh.saini@gmail.com"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-xl shadow-sm text-white hover:bg-blue-700/20"
+                  >
+                    <Mail className="h-5 w-5 mr-2" />
+                    Email Us
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
 
-     <Footer/>
+      <Footer />
     </div>
   );
 };

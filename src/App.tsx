@@ -14,6 +14,7 @@ import billing from "./components/Billing";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import NotFound from "./pages/NotFound";
 import Billing from "./components/Billing";
+import HelpSupportPage from "./components/HelpSupportPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/help" element={<HelpSupportPage />} />
             <Route path="/billing" element={<Billing />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/messages" element={<Messages />} />

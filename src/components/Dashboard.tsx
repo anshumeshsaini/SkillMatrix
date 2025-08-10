@@ -8,6 +8,10 @@ import JobDashboard from './JobDashboard';
 import PlacementGuaranteeCourses from './PlacementGuaranteeCourses';
 import JobPostingModal from './JobPostingModal';
 import Footer from './Footer';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 const Dashboard = () => {
   const [email, setEmail] = useState('');
