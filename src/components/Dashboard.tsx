@@ -11,7 +11,7 @@ import Footer from './Footer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import resumeAnimation from './animations/Resume.json'
 
 const Dashboard = () => {
   const [email, setEmail] = useState('');
@@ -58,6 +58,116 @@ const Dashboard = () => {
     }
   ];
 
+  const ResumeLabSection = () => (
+    <section className="py-16  ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-6">
+
+            New Feature
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Build an ATS-Optimized Resume with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Accenture ResumeLab</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Our AI-powered resume builder ensures your resume gets past Applicant Tracking Systems with <span className="font-semibold text-blue-600">90%+ success rate</span>.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100/50 hover:shadow-2xl transition-all duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-10">
+              <div className="flex items-center mb-6">
+                <div className="bg-blue-100 p-3 rounded-lg mr-4">
+                  <Sparkles className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">ATS-Optimized Templates</h3>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Professionally designed templates that pass through applicant tracking systems used by 99% of Fortune 500 companies.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                {[
+                  "Real-time ATS score feedback",
+                  "Keyword optimization for your target role",
+                  "Formatting that passes automated screens",
+                  "Industry-specific content suggestions"
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-start">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="ml-3 text-gray-700">{feature}</p>
+                  </div>
+                ))}
+              </div>
+              
+              <a href="https://resumelabs.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200">
+                  Build Your Resume Now
+                  <ChevronRight className="ml-2 w-5 h-5" />
+                </Button>
+              </a>
+            </div>
+            
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center p-8">
+      <div className="relative w-full h-96 bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-8 bg-gray-100 flex items-center px-3">
+          <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <div className="absolute top-10 left-0 right-0 bottom-0 p-6 overflow-auto flex items-center justify-center">
+          <Lottie 
+            animationData={resumeAnimation} 
+            loop={true}
+            autoplay={true}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      </div>
+    </div>
+          </div>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: <TrendingUp className="w-8 h-8 text-blue-600" />,
+              title: "Higher Interview Rates",
+              description: "Users see 3x more interview requests with our optimized resumes"
+            },
+            {
+              icon: <Clock className="w-8 h-8 text-cyan-600" />,
+              title: "Save Time",
+              description: "Create a professional resume in 15 minutes or less"
+            },
+            {
+              icon: <Award className="w-8 h-8 text-blue-600" />,
+              title: "Proven Success",
+              description: "Trusted by over 500,000 job seekers worldwide"
+            }
+          ].map((item, index) => (
+            <div key={index} className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-md border border-gray-100/50 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-center mb-4">
+                <div className="bg-blue-50 p-3 rounded-lg mr-4">
+                  {item.icon}
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900">{item.title}</h4>
+              </div>
+              <p className="text-gray-600">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
   return (
     <div className="min-h-screen bg-white antialiased">
       {/* Hero Section */}
@@ -73,7 +183,6 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
-
                 <span className="text-sm font-medium text-gray-700">The future of career growth</span>
               </div>
               
@@ -128,8 +237,7 @@ const Dashboard = () => {
                 />
                 <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-sm border border-gray-100">
                   <div className="flex items-center">
-
-
+                    {/* Content */}
                   </div>
                 </div>
               </div>
@@ -158,7 +266,7 @@ const Dashboard = () => {
                 <img 
                   src={company.logo} 
                   alt={company.name} 
-                  className="h-12 object-contain  hover:opacity-100 transition-opacity duration-300" 
+                  className="h-12 object-contain hover:opacity-100 transition-opacity duration-300" 
                   loading="lazy"
                 />
               </div>
@@ -172,7 +280,6 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-6">
-
               Why Choose Us
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -256,17 +363,13 @@ const Dashboard = () => {
                   style={{ width: '100%', height: '100%' }}
                 />
                 <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm border border-gray-100 flex items-center">
-
-
+                  {/* Content */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-
-      
 
       {/* Dashboard Components */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -283,6 +386,9 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* ResumeLab Section */}
+
+
         <div 
           id="certification-courses" 
           className="transition-all duration-500 transform-gpu hover:-translate-y-2 mt-16"
@@ -290,11 +396,11 @@ const Dashboard = () => {
           <PlacementGuaranteeCourses />
         </div>
       </div>
+      <ResumeLabSection />
       <section className="bg-gradient-to-b from-gray-50 to-white py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-6">
-
               Success Stories
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -335,8 +441,7 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      {/* Final CTA */}
-    
+      
       {jobPostingModalOpen && (
         <JobPostingModal
           onClose={() => setJobPostingModalOpen(false)}
