@@ -116,7 +116,8 @@ const PlacementGuaranteeCourses: React.FC = () => {
       opportunities: "100,000+ Career Opportunities",
       image: courseImages[0],
       isPremium: true,
-      highlights: ["1:1 Mentorship", "Capstone Project", "Industry Certifications"]
+      highlights: ["1:1 Mentorship", "Capstone Project", "Industry Certifications"],
+      url: "https://cybershields.vercel.app/"
     },
     {
       title: "Data Science Professional",
@@ -126,7 +127,8 @@ const PlacementGuaranteeCourses: React.FC = () => {
       opportunities: "45,500+ Hiring Partners",
       image: courseImages[1],
       isPremium: false,
-      highlights: ["Real-world Projects", "Kaggle Competitions", "ML Deployment"]
+      highlights: ["Real-world Projects", "Kaggle Competitions", "ML Deployment"],
+      url: "https://cybershields.vercel.app/"
     },
     {
       title: "HR Executive Program",
@@ -136,7 +138,8 @@ const PlacementGuaranteeCourses: React.FC = () => {
       opportunities: "290,000+ Open Positions",
       image: courseImages[2],
       isPremium: true,
-      highlights: ["Talent Acquisition", "Compensation Strategy", "HR Analytics"]
+      highlights: ["Talent Acquisition", "Compensation Strategy", "HR Analytics"],
+      url: "https://cybershields.vercel.app/"
     },
     {
       title: "Digital Marketing Pro",
@@ -146,12 +149,21 @@ const PlacementGuaranteeCourses: React.FC = () => {
       opportunities: "825,000+ Digital Roles",
       image: courseImages[3],
       isPremium: false,
-      highlights: ["SEO/SEM Certified", "Social Media Mastery", "Campaign Management"]
+      highlights: ["SEO/SEM Certified", "Social Media Mastery", "Campaign Management"],
+      url: "https://cybershields.vercel.app/"
     }
   ];
 
+  const handleViewAllPrograms = () => {
+    window.open("https://cybershields.vercel.app/", "_blank");
+  };
+
+  const handleCardClick = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
-    <div className="max-w-8xl mx-auto px-8 py-16 font-sans overflow-hidden relative  ">
+    <div className="max-w-8xl mx-auto px-8 py-16 font-sans overflow-hidden relative">
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-blue-100/30 to-cyan-100/30 blur-3xl animate-float-slow"></div>
@@ -172,7 +184,10 @@ const PlacementGuaranteeCourses: React.FC = () => {
               Transform your career with our industry-leading, placement-guaranteed programs
             </p>
           </div>
-          <button className="mt-6 md:mt-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg hover:shadow-xl hover:from-blue-600/90 hover:to-cyan-500/90 transition-all duration-300">
+          <button 
+            onClick={handleViewAllPrograms}
+            className="mt-6 md:mt-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg hover:shadow-xl hover:from-blue-600/90 hover:to-cyan-500/90 transition-all duration-300"
+          >
             <span>View All Programs</span>
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -181,7 +196,10 @@ const PlacementGuaranteeCourses: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {courses.map((course, index) => (
             <CourseCardWrapper key={index}>
-              <div className="card_box">
+              <div 
+                className="card_box" 
+                onClick={() => handleCardClick(course.url)}
+              >
                 {/* Glow effect */}
                 <div className="glow-effect"></div>
                 
@@ -236,9 +254,15 @@ const PlacementGuaranteeCourses: React.FC = () => {
                         </span>
                       ))}
                     </div>
-                    <button className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${course.isPremium ? 
-                      'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:shadow-lg hover:shadow-blue-400/30' : 
-                      'bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:shadow-lg hover:shadow-cyan-400/30'}`}>
+                    <button 
+                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${course.isPremium ? 
+                        'bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:shadow-lg hover:shadow-blue-400/30' : 
+                        'bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:shadow-lg hover:shadow-cyan-400/30'}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCardClick(course.url);
+                      }}
+                    >
                       <span>Explore Program</span>
                       {course.isPremium && <Sparkles className="w-4 h-4" />}
                     </button>
