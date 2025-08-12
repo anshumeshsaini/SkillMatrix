@@ -92,7 +92,7 @@ const Billing: React.FC = () => {
           {/* Elegant Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center mb-4 bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 shadow-sm">
-              <Zap className="h-5 w-5 text-blue-600 mr-2" />
+
               <span className="text-blue-600 font-medium">PRICING PLANS</span>
             </div>
             <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl mb-4">

@@ -333,14 +333,7 @@ const Messages = () => {
                 className="relative"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-md opacity-75"></div>
-                <Button 
-                  variant="default" 
-                  size="sm" 
-                  className="relative flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg hover:shadow-blue-500/30 transition-all z-10"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>New Message</span>
-                </Button>
+               
               </motion.div>
             </div>
           </motion.div>
@@ -873,11 +866,7 @@ const Messages = () => {
                         className="mt-6 relative"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-md opacity-75"></div>
-                        <Button 
-                          className="relative bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-md z-10"
-                        >
-                          Start New Chat
-                        </Button>
+                      
                       </motion.div>
                     </CardContent>
                   )}

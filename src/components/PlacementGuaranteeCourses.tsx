@@ -174,7 +174,7 @@ const PlacementGuaranteeCourses: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/10 to-cyan-500/10 px-4 py-2 rounded-full mb-4 border border-blue-200/30 backdrop-blur-sm">
-              <Zap className="text-blue-500" size={20} />
+
               <span className="text-sm font-medium text-blue-700">PREMIUM PROGRAMS</span>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">

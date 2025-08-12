@@ -43,17 +43,17 @@ const Dashboard = () => {
   const testimonials = [
     {
       quote: "This platform helped me land my dream job in just 3 weeks!",
-      author: "Sarah Johnson",
-      role: "Product Designer at TechCorp"
+      author: "Krishna Soni",
+      role: "Product Designer at NOVA Tech"
     },
     {
       quote: "The certification courses boosted my skills and confidence.",
-      author: "Michael Chen",
-      role: "Senior Developer at Innovate Inc."
+      author: "Anshumesh Saini",
+      role: "Senior Developer at Innovate ."
     },
     {
       quote: "Best career decision I've made. 5/5 stars!",
-      author: "David Wilson",
+      author: "Vishal Singh",
       role: "Marketing Manager at BrandCo"
     }
   ];
@@ -204,10 +204,7 @@ const Dashboard = () => {
                     className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm shadow-sm transition-all duration-200 hover:shadow-md focus:shadow-lg"
                   />
                 </div>
-                <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 whitespace-nowrap rounded-xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
-                  Get Started
-                  <ChevronRight className="ml-2 w-5 h-5" />
-                </Button>
+              
               </div>
               
               <div className="flex items-center space-x-4 pt-4">
@@ -222,7 +219,7 @@ const Dashboard = () => {
                   ))}
                 </div>
                 <div className="text-sm text-gray-600">
-                  <span className="font-medium">10,000+ professionals</span> have launched their careers
+                  <span className="font-medium">100+ professionals</span> have launched their careers
                 </div>
               </div>
             </div>
@@ -319,7 +316,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-6">
-                <Rocket className="w-4 h-4 mr-2" />
+
                 Our Process
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
